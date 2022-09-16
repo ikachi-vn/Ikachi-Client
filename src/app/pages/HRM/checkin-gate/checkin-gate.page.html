@@ -1,0 +1,157 @@
+<ion-header>
+
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-button color="dark" class="ion-hide-sm-down">
+                Checkin logs
+            </ion-button>
+        </ion-buttons>
+        <ion-buttons slot="end">
+            <app-detail-toolbar [item]="item" [pageConfig]="pageConfig" (refresh)="refresh()" (delete)="delete()" (help)="help()"></app-detail-toolbar>
+        </ion-buttons>
+    </ion-toolbar>
+
+</ion-header>
+
+<ion-content appScrollbarTheme class="left" [ngClass]="{withFeature: pageConfig.isShowFeature}" forceOverscroll="false">
+    <ion-fab *ngIf="pageConfig.isShowFeature" class="feature no-print " vertical="bottom" horizontal="start" slot="fixed">
+        <div id="order-detail-page" style="position: absolute;"></div>
+
+        <ion-list>
+            <ion-list-header lines="full">
+                <ion-label color="dark">Office</ion-label>
+                <ion-button size="small" (click)="addOffice()" *ngIf="pageConfig.canAdd">
+                    <ion-icon slot="icon-only" name="add"></ion-icon>
+                </ion-button>
+            </ion-list-header>
+            <ion-item lines="full">
+                <div class="c-control">
+                    <ng-select class="c-input no-check-dirty" (change)="changeOffice()" appendTo="#order-detail-page" labelForId="compareTo" [items]="officeList" [(ngModel)]="selectedOffice" bindLabel="Name" placeholder="Chọn office...">
+                        <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
+                            <div *ngIf="i">
+                                <div> <span *ngFor="let l of i.levels">&nbsp;&nbsp;&nbsp;</span> <span [ngOptionHighlight]="search">{{i.Name}}</span></div>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                </div>
+            </ion-item>
+        </ion-list>
+
+        <ion-list>
+            <ion-list-header lines="full">
+                <ion-label color="dark">Checkin gate</ion-label>
+                <ion-button size="small" (click)="changeGate({Id:0})" *ngIf="pageConfig.canAdd">
+                    <ion-icon slot="icon-only" name="add"></ion-icon>
+                </ion-button>
+            </ion-list-header>
+            <ion-item lines="full" button detail="true" class="clickable" (click)="changeGate(i)" [color]="i.Id == selectedShipmentID? 'primary': '' " *ngFor="let i of gateList">
+                <ion-label class="ion-text-wrap">
+                    <ion-text [color]="i.Color">
+                        <h3>{{i.Name}}</h3>
+                    </ion-text>
+                    <p *ngIf="i.Remark">
+                        <small>{{i.GateType}}</small>
+                    </p>
+                </ion-label>
+            </ion-item>
+            <div class="ion-padding" *ngIf="!gateList.length">
+                <div class="c-control">
+                    <ion-button [disabled]="submitAttempt" color="primary" expand="block" (click)="changeGate({Id:0})"> Thêm checkin gate</ion-button>
+                </div>
+            </div>
+        </ion-list>
+    </ion-fab>
+    <app-page-message *ngIf="!(id==0 || id)" [itemsLength]="0" [message]="selectedOffice?'Vui lòng chọn check-in gate':'Vui lòng chọn Office để bắt đầu'" [showSpinner]="pageConfig.showSpinner"></app-page-message>
+
+    <div class="main-view ion-margin" *ngIf="item && pageConfig.showSpinner==false">
+        <div class="row-full shadow full-screen">
+            <div class="ion-padding">
+                <ion-grid fixed>
+                    <form [formGroup]="formGroup">
+                        <ion-row class="hr-group">
+                            <ion-col size="12" size-md="12" size-lg="12" size-xl="4">
+                                <ion-list-header class="ion-no-padding">
+                                    <ion-label color="primary">Checkin gate</ion-label>
+                                </ion-list-header>
+                            </ion-col>
+                            <ion-col size="12" size-md="12" size-lg="12" size-xl="6">
+
+                                <div class="c-control">
+                                    <label class="c-label" for="Name">Tên gọi <small >Id: {{id}}</small>
+                                        <span *ngIf="!formGroup.controls.Name.valid && !formGroup.controls.Name.pending && (formGroup.controls.Name.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+                                    </label>
+                                    <input class="c-input" id="Name" (change)="saveChange();" formControlName="Name" type="text">
+                                </div>
+
+                                
+
+                                <div class="c-control">
+                                    <label class="c-label" for="Type">Phân loại
+                                        <span *ngIf="!formGroup.controls.Type.valid && !formGroup.controls.Type.pending && (formGroup.controls.Type.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+                                    </label>
+                                    <ng-select (change)="saveChange();" class="c-input" labelForId="Type" formControlName="Type" [items]="typeList" bindLabel="Name" bindValue="Code" placeholder="Tìm kiếm...">
+                                        <ng-template ng-option-tmp let-i="item" let-search="searchTerm">
+                                            <div *ngIf="i">
+                                                <div [ngOptionHighlight]="search">{{i.Name}}</div>
+                                            </div>
+                                        </ng-template>
+                                    </ng-select>
+                                </div>
+
+                                <div class="c-control">
+                                    <label class="c-label" for="IPAddress">IPAddress</label>
+                                    <input (change)="saveChange()" class="c-input" id="IPAddress" formControlName="IPAddress" type="text">
+                                </div>
+
+                                <div class="c-control">
+                                    <label class="c-label" for="Lat">Lat</label>
+                                    <input (change)="saveChange()" class="c-input" id="Lat" formControlName="Lat" type="text">
+                                </div>
+
+                                <div class="c-control">
+                                    <label class="c-label" for="Long">Long</label>
+                                    <input (change)="saveChange()" class="c-input" id="Long" formControlName="Long" type="text">
+                                </div>
+
+                                <div class="c-control">
+                                    <label class="c-label" for="MaxDistance">MaxDistance</label>
+                                    <input (change)="saveChange()" class="c-input" id="MaxDistance" formControlName="MaxDistance" type="number">
+                                </div>
+
+                                <div class="c-control">
+                                    <span class="no-warp">
+                                        <input (change)="saveChange()" class="c-checkbox" id="IsVerifyLocation" formControlName="IsVerifyLocation" type="checkbox">
+                                        <label class="c-label checkbox" for="IsVerifyLocation"> IsVerifyLocation?
+                                            <!-- <span *ngIf="!formGroup.controls.IsVerifyLocation.valid && !formGroup.controls.IsVerifyLocation.pending && (formGroup.controls.IsVerifyLocation.dirty || submitAttempt)" ion-text color="danger">(*)</span> -->
+                                        </label>
+                                    </span><br>
+                                </div>
+                            </ion-col>
+
+                        </ion-row>
+
+                        <ion-row class="hr-group">
+                            <ion-col size="12" size-md="12" size-lg="12" size-xl="4">
+                                <ion-list-header class="ion-no-padding">
+                                    <ion-label color="primary">Thông tin khác</ion-label>
+                                </ion-list-header>
+                            </ion-col>
+                            <ion-col size="12" size-md="12" size-lg="12" size-xl="6">
+                                <div class="c-control">
+                                    <label class="c-label" for="Sort">Sort</label>
+                                    <input (change)="saveChange()" class="c-input" id="Sort" formControlName="Sort" type="text">
+                                </div>
+                                <div class="c-control">
+                                    <label class="c-label" for="Remark">Remark</label>
+                                    <input (change)="saveChange()" class="c-input" id="Remark" formControlName="Remark" type="text">
+                                </div>
+                            </ion-col>
+                        </ion-row>
+                    </form>
+                </ion-grid>
+            </div>
+        </div>
+    </div>
+
+    
+</ion-content>

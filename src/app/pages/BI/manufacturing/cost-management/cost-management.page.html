@@ -1,0 +1,85 @@
+<ion-header>
+  <app-list-toolbar pageTitle="Manufacturing Cost Management" [pageConfig]="pageConfig" [selectedItems]="selectedItems"
+    [query]="query">
+  </app-list-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-grid fixed>
+    <ion-row class="hr-group">
+      <ion-col size="12" size-sm="12" size-md="12" size-xl="6">
+        <ion-card>
+          <div>
+            <ion-text color="dark">
+              Return On Assets
+            </ion-text>
+          </div>
+          <!-- <ion-card-header class="background"> -->
+
+          <!-- </ion-card-header> -->
+
+          <ion-card-content>
+            <!-- Column Line Chart -->
+            <div id="ReturnOnAssetsChart" style="width: 100%; height: 100%"></div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="12" size-sm="12" size-md="12" size-xl="6">
+        <ion-card>
+          <div>
+            <ion-text color="dark">
+              Asset Turnover
+            </ion-text>
+          </div>
+          <!-- <ion-card-header class="background"> -->
+
+          <!-- </ion-card-header> -->
+
+          <ion-card-content>
+            <!-- Column Chart -->
+            <!-- <div id="RateOfReturnChart" style="width: 100%; height: 100%"></div> -->
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="12" size-sm="12" size-md="12" size-xl="6">
+        <ion-card>
+          <div>
+            <ion-text color="dark">
+              Maintenance Costs
+            </ion-text>
+          </div>
+          <!-- <ion-card-header class="background"> -->
+
+          <!-- </ion-card-header> -->
+
+          <ion-card-content>
+            <!-- Column Chart -->
+            <!-- <div id="RateOfReturnChart" style="width: 100%; height: 100%"></div> -->
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="12" size-sm="12" size-md="12" size-xl="6">
+        <ion-card>
+          <div>
+            <ion-text color="dark">
+              Unit Costs With Target < $41
+            </ion-text>
+          </div>
+          <!-- <ion-card-header class="background"> -->
+
+          <!-- </ion-card-header> -->
+
+          <ion-card-content>
+            <!-- Column Chart -->
+            <!-- <div id="RateOfReturnChart" style="width: 100%; height: 100%"></div> -->
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

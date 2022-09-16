@@ -1,0 +1,135 @@
+<ion-content appScrollbarTheme appPrintFix class="A4 left">
+    <app-page-message [itemsLength] = "warehouses.length" [showSpinner]="pageConfig.showSpinner"></app-page-message>
+	
+    <div style="overflow: auto;">
+        <ng-container>
+            <section class="sheet rpt" *ngFor="let b of warehouses">
+                <table>
+                    <thead>
+                        <tr>
+                            <td>
+                                <div class="page-header-space"></div>
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="top-zone">
+                                    <table class="rpt-header" cellpadding="0" cellspacing="0">
+                                        <tbody>
+                                            <tr>
+                                                <td class="head-c1">Công ty bán:</td>
+                                                <td class="bol">{{b.Name}}</td>
+                                                <td class="num"></td>
+                                                <td class="bol"></td>
+                                                <td class="num">Ngày in:</td>
+                                                <td class="num bol ngay-hd">{{today}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="6" class="bol title">
+                                                    BÁO CÁO 
+                                                    <span *ngIf="reportQuery.IsCalcShippedOnly">DOANH SỐ BÁN HÀNG</span> 
+                                                    <span *ngIf="!reportQuery.IsCalcShippedOnly">ĐƠN HÀNG</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <table class="rpt-header rpt-nvgh-header" cellpadding="0" cellspacing="0">
+                                        <tbody>
+                                            <tr>
+                                                <td class="head-c1">Thời gian:</td>
+                                                <td class="bol">
+                                                    {{reportQuery.fromDate}} - {{reportQuery.toDate}} 
+                                                    <span *ngIf="reportQuery.IsCalcShippedOnly">(ngày giao)</span>
+                                                    <span *ngIf="!reportQuery.IsCalcShippedOnly">(ngày lên đơn)</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+
+                                    <div class="ds-san-pham">
+                                        <table cellpadding="0" cellspacing="0">
+                                            <tbody>
+                                                <tr class="head">
+                                                    <td rowspan="1" class="cen">STT</td>
+                                                    <td rowspan="1">
+                                                        <div class="ten-sp min">Nhân viên bán hàng</div>
+                                                    </td>
+                                                    <td class="cen">Điện thoại</td>
+                                                    <td class=" num" rowspan="1">D.Số trước CK</td>
+                                                    <td class=" num" rowspan="1">CK</td>
+                                                    <td class=" num" rowspan="1">D.Số sau CK</td>
+                                                </tr>
+                                            </tbody>
+                                            
+                                            <tr *ngFor="let i of b.itemList; let idx = index; ">
+                                                <td class="cen" >{{idx+1}}</td>
+                                                <td >
+                                                    <div class="ten-sp min"><b *ngIf="i.ContactCode">{{i.ContactCode}}</b><b *ngIf="!i.ContactCode">{{i.IDSaleman}}</b> - {{i.FullName}}</div>
+                                                </td>
+                                                <td class="cen">{{i.WorkPhone}}</td>
+                                                <td class="num tien">{{i.TotalBeforeDiscountText}}</td>
+                                                <td class="num tien">{{i.TotalDiscountText}}</td>
+                                                <td class="num tien">{{i.TotalAfterDiscountText}}</td>
+                                            </tr>
+                                            
+                                            <tbody>
+                                                <tr class="head">
+                                                    <td class="num" colspan="3">Tổng cộng</td>
+                                                    <td class="num tien">{{b.TotalBeforeDiscountText}}</td>
+                                                    <td class="num tien">{{b.TotalDiscountText}}</td>
+                                                    <td class="num tien">{{b.TotalAfterDiscountText}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+
+                                    <div class="no-break-page">
+                                        <table class="chu-ky" cellpadding="0" cellspacing="0">
+                                            <tbody>
+                                                <tr>
+
+                                                    <td>
+                                                        Người lập biểu
+                                                        <div class="line2">
+                                                            Ký và ghi rõ họ tên
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        Kế toán trưởng
+                                                        <div class="line2">
+                                                            Ký và ghi rõ họ tên
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        Tổng giám đốc
+                                                        <div class="line2">
+                                                            Ký và ghi rõ họ tên
+                                                        </div>
+                                                    </td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                    <tfoot>
+                        <tr>
+                            <td>
+                                <div class="page-footer-space"></div>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </section>
+        </ng-container>
+    </div>
+</ion-content>

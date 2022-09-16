@@ -1,0 +1,91 @@
+<ion-header>
+  <app-list-toolbar pageTitle="KPI Dashboard" [pageConfig]="pageConfig" [selectedItems]="selectedItems" [query]="query">
+  </app-list-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-grid fixed>
+    <ion-row class="hr-group">
+      <ion-col size="12" size-sm="12" size-md="12" size-xl="5">
+        <ion-row class="hr-group">
+          <ion-col size="12" size-sm="12" size-md="12" size-xl="12">
+            <ion-card>
+              <div>
+                <ion-text color="dark">
+                  Overview
+                </ion-text>
+              </div>
+              <!-- <ion-card-header class="background"> -->
+
+              <!-- </ion-card-header> -->
+
+              <ion-card-content>
+
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+
+          <ion-col size="12" size-sm="12" size-md="12" size-xl="12">
+            <ion-card>
+              <div>
+                <ion-text color="dark">
+                  Performance by Product Category
+                </ion-text>
+              </div>
+              <!-- <ion-card-header class="background"> -->
+              <!-- Line Chart -->
+              <!-- <div id="FleetChart" style="width: 100%; height: 100%"></div> -->
+              <!-- </ion-card-header> -->
+
+              <ion-card-content>
+                <!-- Column Line Mix Chart -->
+                <div id="PerformanceChart" style="width: 100%; height: 100%"></div>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+
+      <ion-col size="12" size-sm="12" size-md="12" size-xl="7">
+        <ion-row class="hr-group">
+          <ion-col size="12" size-sm="12" size-md="12" size-xl="12">
+            <ion-card>
+              <div>
+                <ion-text color="dark">
+                  Top Food & Beverage Product
+                </ion-text>
+              </div>
+              <!-- <ion-card-header class="background"> -->
+
+              <!-- </ion-card-header> -->
+
+              <ion-card-content>
+
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+
+          <ion-col size="12" size-sm="12" size-md="12" size-xl="12">
+            <ion-card>
+              <div>
+                <ion-text color="dark">
+                  On Shelf Availability
+                </ion-text>
+              </div>
+              <!-- <ion-card-header class="background"> -->
+              <!-- Line Chart -->
+              <!-- <div id="FleetChart" style="width: 100%; height: 100%"></div> -->
+              <!-- </ion-card-header> -->
+
+              <ion-card-content>
+                <!-- Highlighting Chart -->
+                <div id="OnShelfAvailability" style="width: 100%; height: 100%"></div>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

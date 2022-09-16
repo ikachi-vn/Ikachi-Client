@@ -1,0 +1,266 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-button color="dark">
+				Thông tin tài khoản
+			</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+
+</ion-header>
+
+<ion-content appScrollbarTheme class="ion-padding">
+
+	<div class="one-col ion-padding">
+		<div class="ion-text-center" *ngIf="env.user">
+			<ion-avatar class="avatar" slot="start">
+				<ion-img #img [src]="env.user.Avatar" (ionError)="img.src = 'assets/avartar-empty.jpg'"></ion-img>
+			</ion-avatar>
+			<div class="full-name">
+				{{env.user.FullName}}
+			</div>
+		</div>
+		<ion-button color="primary" class="logout shadow" (click)="logout()" expand="block">Thoát khỏi tài khoản
+		</ion-button>
+		<div class="ion-margin ion-padding"></div>
+	</div>
+	<div class="main-view">
+		<div class="row-full shadow full-screen">
+			<ion-toolbar color="primary">
+				<ion-segment scrollable="true" (ionChange)="segmentChanged($event)" [value]="segmentView">
+					<ion-segment-button value="s1">
+						<ion-label>Thông tin cá nhân</ion-label>
+					</ion-segment-button>
+					<ion-segment-button value="s2">
+						<ion-label>Khen thưởng</ion-label>
+					</ion-segment-button>
+					<ion-segment-button value="s3">
+						<ion-label>Bảng lương</ion-label>
+					</ion-segment-button>
+					<ion-segment-button value="s4">
+						<ion-label>Nghỉ phép</ion-label>
+					</ion-segment-button>
+					<ion-segment-button value="s5">
+						<ion-label>Góp ý cải tiến</ion-label>
+					</ion-segment-button>
+					<ion-segment-button value="s6">
+						<ion-label>Khác...</ion-label>
+					</ion-segment-button>
+				</ion-segment>
+			</ion-toolbar>
+
+			<div *ngIf="segmentView == 's1'">
+				
+
+				<div class="ion-padding" *ngIf="item && env.user">
+					<ion-grid fixed>
+						<form [formGroup]="formGroup">
+							<ion-row class="hr-group">
+								<ion-col size="12" size-sm="12" size-md="4" size-xl="4">
+									<ion-list lines="none">
+										<ion-list-header class="ion-no-padding">
+											<ion-label color="primary">Thông tin cá nhân</ion-label>
+										</ion-list-header>
+										<ion-item class="ion-no-padding">
+											<ion-label color="medium" class="ion-text-wrap">
+												
+											</ion-label>
+										</ion-item>
+									</ion-list>
+								</ion-col>
+								<ion-col size="12" size-sm size-md="8" size-xl="6">
+									<div class="c-control" *ngIf="item.Id">
+										<label class="c-label" for="Id">Id</label>
+										<input class="c-input" id="Id" formControlName="Id" type="number">
+									</div>
+									<div class="c-control">
+										<label class="c-label" for="Email">Email</label>
+										<input class="c-input" id="Email" formControlName="Email" [(ngModel)]="env.user.Email">
+									</div>
+									<div class="c-control">
+										<label class="c-label" for="FullName">Họ và tên
+											<span *ngIf="!formGroup.controls.FullName.valid && !formGroup.controls.FullName.pending && (formGroup.controls.FullName.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+										</label>
+										<input class="c-input" id="FullName" [(ngModel)]="env.user.FullName" formControlName="FullName" type="text">
+									</div>
+									<div class="c-control">
+										<label class="c-label" for="DOB">Ngày sinh
+											<span *ngIf="!formGroup.controls.DOB.valid && !formGroup.controls.DOB.pending && (formGroup.controls.DOB.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+										</label>
+										<input class="c-input" id="DOB" formControlName="DOB" type="date" [min]="minDOB" [max]="maxDOB">
+									</div>
+									<div class="c-control">
+										<label class="c-label" for="PhoneNumber">Số điện thoại
+											<span *ngIf="!formGroup.controls.PhoneNumber.valid && !formGroup.controls.PhoneNumber.pending && (formGroup.controls.PhoneNumber.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+										</label>
+										<input (change)="saveChange()" class="c-input" formControlName="PhoneNumber" type="text">
+									</div>
+								</ion-col>
+							</ion-row>
+							<ion-row class="hr-group">
+								<ion-col size="12" size-sm="12" size-md="4" size-xl="4">
+									<ion-list-header class="ion-no-padding">
+										<ion-label color="primary">CMND / Thẻ căn cước</ion-label>
+									</ion-list-header>
+								</ion-col>
+								<ion-col size="12" size-sm size-md="8" size-xl="6">
+									<div class="c-control">
+										<label class="c-label" for="Domicile">Nguyên quán
+											<span *ngIf="!formGroup.controls.Domicile.valid && !formGroup.controls.Domicile.pending && (formGroup.controls.Domicile.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+										</label>
+										<input (change)="saveChange()" class="c-input" id="Domicile" formControlName="Domicile" type="text">
+									</div>
+									<div class="c-control">
+										<label class="c-label" for="IdentityCardNumber">Số CMND/Thẻ CC
+											<span *ngIf="!formGroup.controls.IdentityCardNumber.valid && !formGroup.controls.IdentityCardNumber.pending && (formGroup.controls.IdentityCardNumber.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+										</label>
+										<input (change)="saveChange()" class="c-input" id="IdentityCardNumber" formControlName="IdentityCardNumber" type="text">
+									</div>
+
+									<div class="c-control">
+										<label class="c-label" for="DateOfIssueID">Ngày cấp
+											<span *ngIf="!formGroup.controls.DateOfIssueID.valid && !formGroup.controls.DateOfIssueID.pending && (formGroup.controls.DateOfIssueID.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+										</label>
+										<input (change)="saveChange()" class="c-input" id="DateOfIssueID" formControlName="DateOfIssueID" type="date" [min]="minDOB">
+									</div>
+
+									<div class="c-control">
+										<label class="c-label" for="IssuedBy">Nơi cấp
+											<span *ngIf="!formGroup.controls.IssuedBy.valid && !formGroup.controls.IssuedBy.pending && (formGroup.controls.IssuedBy.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+										</label>
+										<input (change)="saveChange()" class="c-input" id="IssuedBy" formControlName="IssuedBy" type="text">
+									</div>
+								</ion-col>
+							</ion-row>
+
+
+						</form>
+						<form [formGroup]="changePasswordForm">
+							<ion-row class="hr-group">
+								<ion-col size="12" size-sm="12" size-md="4" size-xl="4">
+									<ion-list lines="none">
+										<ion-list-header class="ion-no-padding">
+											<ion-label color="primary">Đổi mật khẩu</ion-label>
+										</ion-list-header>
+										<ion-item class="ion-no-padding">
+											<ion-label color="medium" class="ion-text-wrap">
+												Để nâng cao bảo mật - bảo vệ tài khoản, bạn nên dùng mật khẩu có:
+												<ul>
+													<li>Độ dài từ 8 ký tự trở lên</li>
+													<li>Có ít nhất một ký tự là:<ul>
+															<li>Số</li>
+															<li>Chữ hoa</li>
+															<li>Chữ thường</li>
+															<li>Ký tự đặc biệt</li>
+														</ul>
+													</li>
+												</ul>
+											</ion-label>
+
+										</ion-item>
+									</ion-list>
+								</ion-col>
+								<ion-col size="12" size-sm size-md="8" size-xl="6">
+									<div class="c-control">
+										<label class="c-label" for="oldPassword">Nhập mật cũ
+											<span *ngIf="!changePasswordForm.controls.oldPassword.valid && !changePasswordForm.controls.oldPassword.pending && (changePasswordForm.controls.oldPassword.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+										</label>
+										<input class="c-input" id="oldPassword" formControlName="oldPassword" [type]="passwordViewType">
+									</div>
+									<div class="c-control">
+										<label class="c-label" for="newPassword">Nhập mật khẩu
+											<span *ngIf="!changePasswordForm.controls.newPassword.valid && !changePasswordForm.controls.newPassword.pending && (changePasswordForm.controls.newPassword.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+										</label>
+										<input class="c-input" id="newPassword" formControlName="newPassword" [type]="passwordViewType">
+									</div>
+									<div class="c-control">
+										<label class="c-label" for="confirmPassword">Nhập lại mật khẩu
+											<span *ngIf="!changePasswordForm.controls.confirmPassword.valid && !changePasswordForm.controls.confirmPassword.pending && (changePasswordForm.controls.confirmPassword.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+										</label>
+										<input class="c-input" id="confirmPassword" formControlName="confirmPassword" [type]="passwordViewType">
+									</div>
+
+									<div class="c-control">
+										<ion-button size="small" (click)="changePassword()">
+											Đổi mật khẩu
+										</ion-button>
+
+										<ion-button size="small" (click)="passwordViewType = passwordViewType=='password'?'text':'password'" color="warning">
+											<ion-icon slot="icon-only" [name]="passwordViewType=='password'?'eye':'eye-off'"></ion-icon>
+										</ion-button>
+									</div>
+								</ion-col>
+
+							</ion-row>
+						</form>
+						<ion-row class="hr-group">
+							<ion-col size="12" size-sm="12" size-md="4" size-xl="4">
+								<ion-list lines="none">
+									<ion-list-header class="ion-no-padding">
+										<ion-label color="primary">Theme</ion-label>
+									</ion-list-header>
+									<ion-item class="ion-no-padding">
+										<ion-label color="medium" class="ion-text-wrap">
+											Tùy chọn giao diện
+										</ion-label>
+									</ion-item>
+								</ion-list>
+							</ion-col>
+							<ion-col size="12" size-sm size-md="8" size-xl="6">
+								
+
+								<ion-list *ngIf="userSetting && userSetting.isLoaded">
+									<ion-item class="ion-no-padding">
+										<ion-label class="ion-text-wrap">
+											<ion-text color="dark">
+												<h3>Dark theme</h3>
+											</ion-text>
+											<ion-text color="medium">
+												<p>Chế độ màu tối</p>
+											</ion-text>
+										</ion-label>
+										<ion-toggle (click)="updateUserSetting(userSetting.IsDarkTheme)" slot="end" color="primary" [checked]="userSetting.IsDarkTheme.Value"></ion-toggle>
+									</ion-item>
+
+									<ion-item class="ion-no-padding">
+										<ion-label class="ion-text-wrap">
+											<ion-text color="dark">
+												<h3>Compact menu</h3>
+											</ion-text>
+											<ion-text color="medium">
+												<p>Menu được thu gọn</p>
+											</ion-text>
+										</ion-label>
+										<ion-toggle (click)="updateUserSetting(userSetting.IsCompactMenu)" slot="end" [checked]="userSetting.IsCompactMenu.Value">
+										</ion-toggle>
+									</ion-item>
+
+									<!-- <ion-item class="ion-no-padding">
+										<ion-label class="ion-text-wrap">
+											<ion-text color="dark">
+												<h3>Cache query</h3>
+											</ion-text>
+											<ion-text color="medium">
+												<p>Lưu lại các truy vấn để giữ lại tình trạng làm việc trước đó</p>
+											</ion-text>
+										</ion-label>
+										<ion-toggle (ionChange)="updateUserSetting(userSetting.IsCacheQuery, $event)" slot="end" [checked]="userSetting.IsCacheQuery.Value">
+										</ion-toggle>
+									</ion-item> -->
+
+								</ion-list>
+							</ion-col>
+						</ion-row>
+					</ion-grid>
+				</div>
+			</div>
+			<div *ngIf="segmentView == 's2'">
+				<div class="ion-padding"></div>
+			</div>
+			<div *ngIf="segmentView == 's3'">
+				<div class="ion-padding"></div>
+			</div>
+		</div>
+
+	</div>
+</ion-content>

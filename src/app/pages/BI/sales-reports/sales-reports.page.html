@@ -1,0 +1,180 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-buttons slot="start" class="ion-hide-sm-down_">
+			<ion-button color="dark" class="ion-hide-sm-down">
+				Sales reports
+			</ion-button>
+		</ion-buttons>
+		<ion-buttons slot="end">
+			<ion-button (click)="print()" title="In phiếu">
+				<ion-icon slot="icon-only" name="print"></ion-icon>
+			</ion-button>
+			
+			<ion-button (click)="refresh()" title="In phiếu">
+				<ion-icon slot="icon-only" name="reload-outline"></ion-icon>
+			</ion-button>
+			
+			<ion-button title="Chức năng mở rộng" (click)="pageConfig.isShowFeature = !pageConfig.isShowFeature;">
+				<ion-icon slot="icon-only" [name]="pageConfig.isShowFeature? 'close-outline':'list-circle-outline'">
+				</ion-icon>
+			</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+
+	<ion-toolbar style="--padding-start: 4px;" color="primary">
+		<ion-segment scrollable="true" (ionChange)="segmentChanged($event)" [value]="segmentView">
+			<!-- <ion-segment-button value="sales-reports/sale-overview">
+				<ion-label>Tổng quát</ion-label>
+			</ion-segment-button> -->
+			<ion-segment-button value="sales-reports/sale-saleman">
+				<ion-label>NVBH</ion-label>
+			</ion-segment-button>
+			<ion-segment-button value="sales-reports/sale-product">
+				<ion-label>Sản phẩm</ion-label>
+			</ion-segment-button>
+			<ion-segment-button value="sales-reports/sale-outlet">
+				<ion-label>Khách hàng</ion-label>
+			</ion-segment-button>
+			<!-- <ion-segment-button value="sales-reports/sale-shipping">
+				<ion-label>Giao hàng</ion-label>
+			</ion-segment-button> -->
+			<!-- <ion-segment-button value="sales-reports/sale-performance">
+				<ion-label>Hiệu suất</ion-label>
+			</ion-segment-button> -->
+			<!-- <ion-segment-button value="sales-reports/sale-commission">
+				<ion-label>Commission</ion-label>
+			</ion-segment-button> -->
+			<!-- <ion-segment-button value="sales-reports/sale-order-details">
+				<ion-label>Đơn hàng</ion-label>
+			</ion-segment-button> -->
+			<!-- <ion-segment-button value="sales-reports/sale-forecasts">
+				<ion-label>Dự phóng</ion-label>
+			</ion-segment-button> -->
+
+		</ion-segment>
+	</ion-toolbar>
+</ion-header>
+
+
+
+<ion-content appScrollbarTheme appPrintFix class="A4" [ngClass]="{withFeature: pageConfig.isShowFeature}" forceOverscroll="false">
+	<ion-fab *ngIf="pageConfig.isShowFeature" [ngClass]="{withSearch: pageConfig.isShowSearch}" class="feature no-print " vertical="top" horizontal="end" slot="fixed">
+		<ion-list-header lines="inset">
+			<ion-label color="dark">Điều kiện lọc</ion-label>
+		</ion-list-header>
+		<div class="ion-padding" style="padding-bottom: 0;">
+			<div class="c-control">
+				<label class="c-label">Nhóm theo</label>
+				<ng-container *ngFor="let f of rpt.rptGlobal.frequency">
+					<ion-button [fill]="filter.frequency == f.Id ? 'solid' : 'outline'" size="small" (click)="changeFrequency(f)">
+						{{f.Name}}
+					</ion-button>
+				</ng-container>
+			</div>
+			<div class="c-control">
+				<label class="c-label">Thời gian ({{filter.fromDate}} - {{filter.toDate}})</label>
+				<ion-button *ngIf="filter.frequency == 1" (click)="changeDateFillter('d')" [fill]="filter.type=='d'? 'solid': 'outline'" size="small">Hôm nay</ion-button>
+				<ion-button *ngIf="filter.frequency == 1" (click)="changeDateFillter('dw')" [fill]="filter.type=='dw'? 'solid': 'outline'" size="small">Tuần này</ion-button>
+				<ion-button *ngIf="filter.frequency == 1" (click)="changeDateFillter('dm')" [fill]="filter.type=='dm'? 'solid': 'outline'" size="small">Tháng này</ion-button>
+
+				<ion-button *ngIf="filter.frequency == 2" (click)="changeDateFillter('m')" [fill]="filter.type=='m'? 'solid': 'outline'" size="small">Tháng này</ion-button>
+				<ion-button *ngIf="filter.frequency == 2" (click)="changeDateFillter('m3')" [fill]="filter.type=='m3'? 'solid': 'outline'" size="small">3 tháng</ion-button>
+				<ion-button *ngIf="filter.frequency == 2" (click)="changeDateFillter('m6')" [fill]="filter.type=='m6'? 'solid': 'outline'" size="small">6 tháng</ion-button>
+				<ion-button *ngIf="filter.frequency == 2" (click)="changeDateFillter('my')" [fill]="filter.type=='my'? 'solid': 'outline'" size="small">Năm nay</ion-button>
+
+				<ion-button *ngIf="filter.frequency == 3" (click)="changeDateFillter('q')" [fill]="filter.type=='q'? 'solid': 'outline'" size="small">Quý này</ion-button>
+				<ion-button *ngIf="filter.frequency == 3" (click)="changeDateFillter('q2')" [fill]="filter.type=='q2'? 'solid': 'outline'" size="small">2 quý</ion-button>
+				<ion-button *ngIf="filter.frequency == 3" (click)="changeDateFillter('q3')" [fill]="filter.type=='q3'? 'solid': 'outline'" size="small">3 quý</ion-button>
+				<ion-button *ngIf="filter.frequency == 3" (click)="changeDateFillter('qy')" [fill]="filter.type=='qy'? 'solid': 'outline'" size="small">Năm nay</ion-button>
+
+				<ion-button *ngIf="filter.frequency == 4" (click)="changeDateFillter('y')" [fill]="filter.type=='y'? 'solid': 'outline'" size="small">Năm nay</ion-button>
+				<ion-button *ngIf="filter.frequency == 4" (click)="changeDateFillter('y2')" [fill]="filter.type=='y2'? 'solid': 'outline'" size="small">2 năm</ion-button>
+				<ion-button *ngIf="filter.frequency == 4" (click)="changeDateFillter('y3')" [fill]="filter.type=='y3'? 'solid': 'outline'" size="small">3 năm</ion-button>
+
+				<ion-button (click)="changeDateFillter('set')" [fill]="filter.type=='set'? 'solid': 'outline'" size="small">Tùy chọn...</ion-button>
+
+				<div *ngIf="filter.type=='set'" class="date-pick">
+					<input (change)="changeDateFillter('setdone')" [(ngModel)]="filter.fromDate" required type="date" pattern="\d{1,2}/\d{1,2}/\d{4}" class="datepicker" name="date" value="" />
+					<input (change)="changeDateFillter('setdone')" [(ngModel)]="filter.toDate" required type="date" pattern="\d{1,2}/\d{1,2}/\d{4}" class="datepicker" name="date" value="" />
+				</div>
+			</div>
+
+			<div class="c-control">
+				<label class="c-label" for="IDSaleman">Cách tính số liệu <i>
+					<small *ngIf="filter.isCalcShippedOnly">
+						Tính theo ngày giao hàng
+					</small>
+					<small *ngIf="!filter.isCalcShippedOnly">
+						Tính theo ngày lên đơn
+					</small>
+				</i></label>
+				<ion-button (click)="filter.isCalcShippedOnly = true" [fill]="filter.isCalcShippedOnly? 'solid': 'outline'" size="small">Thực giao</ion-button>
+				<ion-button (click)="filter.isCalcShippedOnly = false" [fill]="!filter.isCalcShippedOnly? 'solid': 'outline'" size="small">Đơn hàng</ion-button>
+				
+			</div>
+
+			<div class="c-control">
+				<label class="c-label" for="IDSaleman">NVBH</label>
+				<ng-select [(ngModel)]="filter.saleman" class="c-input no-check-dirty" #IDSaleman labelForId="IDSaleman" [items]="salemanList$ | async" [typeahead]="salemanListInput$" [loading]='salemanListLoading' [virtualScroll]="true" bindLabel="FullName" placeholder="Tìm tên, mã hoặc số điện thoại...">
+					<ng-template ng-option-tmp let-i="item" let-search="searchTerm">
+						<div *ngIf="i">
+							<div><span [ngOptionHighlight]="search">{{i.FullName}}</span></div>
+							<small>#<b><span class="important" [ngOptionHighlight]="search">{{i.Id}} - {{i.Code}}</span></b> <span *ngIf="i.Phone"> | điện thoại: <b [ngOptionHighlight]="search">{{i.Phone}}</b></span></small>
+						</div>
+					</ng-template>
+				</ng-select>
+			</div>
+			
+			<div class="c-control">
+				<label class="c-label" for="IDOutlet">Khách hàng</label>
+				<ng-select [(ngModel)]="filter.outlet" class="c-input no-check-dirty" #IDOutlet labelForId="IDOutlet" [items]="outletList$ | async" [typeahead]="outletListInput$" [loading]='outletListLoading' [virtualScroll]="true" bindLabel="Name" placeholder="Tìm tên, mã hoặc số điện thoại...">
+					<ng-template ng-label-tmp let-i="item" let-a="item.Address">
+						{{i.Name}}
+						<small *ngIf="a">
+							<span *ngIf="a.AddressLine1"> | {{a.AddressLine1}}</span>
+							<span *ngIf="a.Ward">, {{a.Ward}}</span>
+							<span *ngIf="a.District">, {{a.District}}</span>
+							<span *ngIf="a.Province">, {{a.Province}}</span>
+						</small>
+					</ng-template>
+					<ng-template ng-option-tmp let-i="item" let-a="item.Address" let-search="searchTerm">
+						<div *ngIf="i">
+							<div>
+								<span [ngOptionHighlight]="search">{{i.Name}}</span>
+								<span *ngIf="i.WorkPhone"> | <small> <b [ngOptionHighlight]="search">{{i.WorkPhone}}</b> </small></span>
+							</div>
+							<small *ngIf="a">
+								<b *ngIf="i.Code"><span class="important" [ngOptionHighlight]="search">{{i.Code}}</span></b>
+								<span *ngIf="a.AddressLine1"> | {{a.AddressLine1}}</span>
+								<span *ngIf="a.Ward">, {{a.Ward}}</span>
+								<span *ngIf="a.District">, {{a.District}}</span>
+								<span *ngIf="a.Province">, {{a.Province}}</span>
+								<br *ngIf="a.AddressLine2 || a.Contact">
+								<span *ngIf="a.AddressLine2">{{a.AddressLine2}}</span>
+								<span *ngIf="a.Contact"> | Liên hệ: {{a.Contact}}</span>
+								<span *ngIf="a.Phone1"> - {{a.Phone1}}</span>
+								<span *ngIf="a.Phone2"> - {{a.Phone2}}</span>
+							</small>
+						</div>
+					</ng-template>
+				</ng-select>
+			</div>
+
+			
+
+			<div class="c-control">
+				<ion-button [disabled]="submitAttempt" color="primary" expand="block" (click)="runReports()"> Tính số liệu</ion-button> 
+				<!-- shape="round" -->
+			</div>
+
+			<div class="c-control">
+				<ion-button [disabled]="submitAttempt" color="primary" fill="outline" expand="block" (click)="exportSaleProductReport()"> Xuất excel chi tiết...</ion-button> 
+				<!-- shape="round" -->
+			</div>
+
+		</div>
+
+
+	</ion-fab>
+	<ion-router-outlet></ion-router-outlet>
+</ion-content>

@@ -1,0 +1,107 @@
+<ion-header class="head-bg ion-no-border">
+  <ion-toolbar class="transparent ion-no-border">
+    <!-- <ion-buttons slot="start">
+      <ion-button class="back-btn" color="light" (click)="goBack()">
+        <ion-icon slot="icon-only" name="arrow-round-back"></ion-icon>
+      </ion-button>
+    </ion-buttons> -->
+
+    <ion-buttons slot="start">
+      <ion-menu-toggle>
+        <ion-button class="back-btn" color="light">
+          <ion-icon slot="icon-only" name="menu"></ion-icon>
+        </ion-button>
+      </ion-menu-toggle>
+    </ion-buttons>
+
+    <ion-title color="light"></ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content appScrollbarTheme class="gray">
+  <ion-fab class="fake-header-bg" vertical="top" horizontal="left" slot="fixed">
+  </ion-fab>
+  <div class="main-content">
+
+    <div class="summary">
+      <div class="time">ĐĂNG KÝ</div>
+      <div class="date">TÀI KHOẢN ART Shipper</div>
+    </div>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" size-sm="10" push-sm="1" size-md="8" push-md="2" size-lg="8" push-lg="2" size-xl="6"
+          push-xl="3">
+          <ion-card no-margin class="booking">
+
+            <div class="logo"></div>
+
+            <ion-card-header>
+              <ion-card-title>
+                <!-- <ion-text color="tertiary">
+                  NAME
+                </ion-text> -->
+              </ion-card-title>
+              <ion-card-subtitle text-center>
+                <!-- <ion-text color="secondary">DOB</ion-text> -->
+              </ion-card-subtitle>
+            </ion-card-header>
+
+            <ion-card-content>
+              <ion-item>
+                <ion-label color="primary" position="stacked">Họ và tên <ion-text color="danger">(*)</ion-text>
+                </ion-label>
+                <ion-input required="true" [(ngModel)]="item.FullName" placeholder="Vui lòng nhập đủ họ và tên">
+                </ion-input>
+              </ion-item>
+
+              <!-- <ion-item>
+                <ion-label color="primary" position="stacked">Ngày sinh</ion-label>
+                <ion-input [(ngModel)]="item.DOB" placeholder="Ngày tháng năm sinh"></ion-input>
+              </ion-item> -->
+
+              <ion-item>
+                <ion-label color="primary" position="stacked">Email <ion-text color="danger">(*)</ion-text>
+                </ion-label>
+                <ion-input [(ngModel)]="item.EmailAddress" inputmode="email" type="email"
+                  placeholder="Địa chỉ email"></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-label color="primary" position="stacked">Điện thoại <ion-text color="danger">(*)</ion-text>
+                </ion-label>
+                <ion-input [(ngModel)]="item.PhoneNumber" required="true" inputmode="tel" type="tel"
+                  placeholder="Vui lòng nhập số điện thoại"></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-label color="primary" position="stacked">Mật khẩu <ion-text color="danger">(*)</ion-text>
+                </ion-label>
+                <ion-input [(ngModel)]="item.Password" required="true" inputmode="password" type="password"
+                  placeholder="Vui lòng chọn mật khẩu từ 6 ký tự trở lên"></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-label color="primary" position="stacked">Nhập lại mật khẩu <ion-text color="danger">(*)</ion-text>
+                </ion-label>
+                <ion-input [(ngModel)]="item.ConfirmPassword" required="true" inputmode="password" type="password"
+                  placeholder="Vui lòng xác nhận lại mật khẩu bên trên"></ion-input>
+              </ion-item>
+
+              <div class="ion-padding"></div>
+              <div text-center text-md-right>
+                <ion-button shape="round" (click)="register()">
+                  ĐĂNG KÝ TÀI KHOẢN
+                </ion-button>
+              </div>
+
+              <div class="ion-padding"></div>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </div>
+
+
+</ion-content>

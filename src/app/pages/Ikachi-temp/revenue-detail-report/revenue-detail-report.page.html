@@ -1,0 +1,135 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" class="ion-hide-sm-down_">
+      <ion-button color="dark" class="ion-hide-sm-down">
+        Báo Cáo Doanh Thu
+      </ion-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="refresh()" title="Tải lại">
+        <ion-icon slot="icon-only" name="reload-outline"></ion-icon>
+      </ion-button>
+
+      <ion-button title="Chức năng mở rộng" (click)="pageConfig.isShowFeature = !pageConfig.isShowFeature;">
+        <ion-icon slot="icon-only" [name]="pageConfig.isShowFeature? 'close-outline':'list-circle-outline'">
+        </ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content appScrollbarTheme class="ion-padding">
+
+  <!-- feature -->
+  <ion-fab [hidden]="!pageConfig.isShowFeature" [ngClass]="{withSearch: pageConfig.isShowSearch}" class="feature"
+    vertical="top" horizontal="end" slot="fixed">
+    <div class="ion-padding">
+      <div class="title">
+        <div class="c-control">
+          <div class="c-label"><b>BÁO CÁO DOANH THU</b></div>
+        </div>
+      </div>
+
+      <!-- <div class="c-control">
+        <label class="c-label">Chi nhánh</label>
+        <ng-container *ngFor="let b of pageBranch">
+          <ion-button [fill]="b.IsSelected ? 'solid' : 'outline'" size="small" (click)="toogleBranchDataset(b)">
+            {{b.Code}}
+          </ion-button>
+        </ng-container>
+      </div> -->
+
+      <div class="c-control">
+        <label class="c-label">Thời gian</label>
+        <ion-button *ngIf="rpt.rptGlobal.query.frequency == 1" (click)="changeDateFilter('d')"
+          [fill]="rpt.rptGlobal.query.type=='d'? 'solid': 'outline'" size="small">Hôm nay</ion-button>
+        <ion-button *ngIf="rpt.rptGlobal.query.frequency == 1" (click)="changeDateFilter('dw')"
+          [fill]="rpt.rptGlobal.query.type=='dw'? 'solid': 'outline'" size="small">Tuần này</ion-button>
+        <ion-button *ngIf="rpt.rptGlobal.query.frequency == 1" (click)="changeDateFilter('cm')"
+          [fill]="rpt.rptGlobal.query.type=='cm'? 'solid': 'outline'" size="small">Tháng này</ion-button>
+        <ion-button *ngIf="rpt.rptGlobal.query.frequency == 1" (click)="changeDateFilter('pm')"
+          [fill]="rpt.rptGlobal.query.type=='pm'? 'solid': 'outline'" size="small">Tháng trước</ion-button>
+        <ion-button (click)="changeDateFilter('set')" [fill]="rpt.rptGlobal.query.type=='set'? 'solid': 'outline'"
+          size="small">Tùy chọn...</ion-button>
+
+        <div *ngIf="rpt.rptGlobal.query.type=='set'" class="date-pick">
+          <input (blur)="changeDateFilter('setdone')" [(ngModel)]="rpt.rptGlobal.query.fromDate" required type="date"
+            pattern="\d{1,2}/\d{1,2}/\d{4}" class="datepicker" name="date" value="" />
+          <input (blur)="changeDateFilter('setdone')" [(ngModel)]="rpt.rptGlobal.query.toDate" required type="date"
+            pattern="\d{1,2}/\d{1,2}/\d{4}" class="datepicker" name="date" value="" />
+        </div>
+        <div class="query-time">Từ ngày: {{rpt.rptGlobal.query.fromDate}} - Đến ngày: {{rpt.rptGlobal.query.toDate}}</div>
+      </div>
+
+    </div>
+  </ion-fab>
+
+
+  <div class="main-view">
+    <div class="row-1">
+      <div class="chart-box" style="width: 100%;">
+        <div class="title">BÁO CÁO: Từ ngày: {{fromDate | date:'dd/MM/yy'}} - Đến ngày: {{toDate | date:'dd/MM/yy'}}</div>
+        <!--<b>In Hopitality - Tháng 11.2021</b> -->
+        <div class="chart-contain" style="overflow-x: auto; overflow-y: auto;">
+          <table class="data-table fix-height">
+            <tr class="company-name">
+              <td style="text-align: right !important;" class="col-group">Tên nhóm</td>
+              <td style="text-align: center !important;" class="col-name">Tên hàng</td>
+              <td style="text-align: right !important;" class="col-qty">Số lượng</td>
+              <td style="text-align: right !important;">Bán hàng</td>
+              <td style="text-align: right !important;">Giảm giá</td>
+              <td style="text-align: right !important;">Tổng cộng</td>
+            </tr>
+            <ng-container *ngFor="let codes of listItems, let j as index">
+              <!-- <tr (click)="i.isShow=!i.isShow" [ngClass]="{bold: codes.Code}">
+                <td style="text-align: center !important;" class="col-name">
+                  {{codes.Code}}
+                </td>
+                <td style="text-align: right !important;"></td>
+                <td style="text-align: right !important;"></td>
+                <td style="text-align: right !important;"></td>
+                <td style="text-align: right !important;"></td>
+                <td style="text-align: right !important;"></td>
+              </tr> -->
+
+              <tr *ngFor="let i of codes.DataList" [ngClass]="{bold: i.SumLine}" [ngStyle]="{'background-color': i.SumLine ? 'rgba(var(--ion-color-primary-rgb), 0.1)' : 'transparent'}">
+                <td class="col-group">
+
+                  {{i.ItemGroupCode}}
+
+                </td>
+                <td class="col-name">
+
+                  {{i.ItemDescription}}
+
+                </td>
+                <td class="col-qty" title="Quantity">
+
+                  {{i.QuantityText}}
+
+                </td>
+                <td title="SaleAmount">
+
+                  {{i.SaleAmountText}}
+
+                </td>
+                <td title="DiscountAmount">
+
+                  {{i.DiscountAmountText}}
+
+                </td>
+                <td title="TotalAmount">
+
+                  {{i.TotalAmountText}}
+
+                </td>
+              </tr>
+            </ng-container>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</ion-content>

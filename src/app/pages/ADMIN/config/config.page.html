@@ -1,0 +1,115 @@
+<ion-header>
+	<app-list-toolbar pageTitle="Cấu hình" [pageConfig]="pageConfig" [selectedItems]="selectedItems" [ShowArchive]="false" [query]="optionQuery" (refresh)="preLoadData(null)" (help)="help()"></app-list-toolbar>
+	<div class="withFeature left" [ngClass]="{withFeature: pageConfig.isShowFeature}" *ngIf="pageConfig.isShowSearch">
+		<section class="table">
+			<header class="bold">
+				<div class="col-checkbox cell"></div>
+				<div class="col-name cell">
+					Tìm cấu hình
+					<ion-icon class="min-btn" (click)="pageConfig.isShowSearch = !pageConfig.isShowSearch" *ngIf="optionQuery.Keyword" name="search" color="primary"></ion-icon>
+				</div>
+			</header>
+			<form (submit)="preLoadData(null)" action="#">
+				<header class="filter">
+					<div class="col-checkbox cell"></div>
+					<div class=" cell">
+						<input [ngModelOptions]="{standalone: true}" [(ngModel)]="optionQuery.Keyword" class="c-input" [ngClass]="{active: optionQuery.Keyword}" type="text">
+						<ion-icon class="min-btn" (click)="optionQuery.Keyword=''; preLoadData(null)" *ngIf="optionQuery.Keyword" name="close-circle-outline"></ion-icon>
+					</div>
+					<button mat-raised-button type="submit" style="display:none">Search</button>
+				</header>
+			</form>
+		</section>
+	</div>
+</ion-header>
+
+<ion-content appScrollbarTheme class="left" [ngClass]="{withFeature: pageConfig.isShowFeature}" forceOverscroll="false">
+	<ion-fab *ngIf="pageConfig.isShowFeature" [ngClass]="{withSearch: pageConfig.isShowSearch}" class="feature no-print " vertical="bottom" horizontal="start" slot="fixed">
+		<app-page-message [itemsLength]="1" [showSpinner]="pageConfig.showSpinner"></app-page-message>
+		<div *ngIf="pageConfig.showSpinner==false">
+			<!-- <ion-list-header lines="full">
+				<ion-label color="dark">Đơn vị</ion-label>
+			</ion-list-header> -->
+			<div class="ion-padding" style="padding-bottom: 0;">
+				<div class="c-control">
+					<label class="c-label" for="IDBranch">
+						<ion-text color="primary">
+							Đơn vị
+						</ion-text>
+					</label>
+					<ng-select class="c-input no-check-dirty" (change)="selectBranch();" appendTo="" #IDBranch [(ngModel)]="selectedBranch" labelForId="IDBranch" [items]="branchList" bindLabel="Name" bindValue="" placeholder="Chọn đơn vị">
+						<ng-template ng-option-tmp let-i="item" let-search="searchTerm">
+							<div *ngIf="i">
+								<div> <span *ngFor="let l of i.levels">&nbsp;&nbsp;&nbsp;</span> <span [ngOptionHighlight]="search">{{i.Name}}</span></div>
+							</div>
+						</ng-template>
+					</ng-select>
+				</div>
+				<!-- <form [formGroup]="formGroup">
+					<div class="c-control">
+						<label class="c-label" for="GlobalLocationNumber">
+							GLN <small>GlobalLocationNumber</small>
+							<i class="info-tooltip" title="Mã toàn cầu phân định địa điểm"></i>
+							<span *ngIf="!formGroup.controls.GlobalLocationNumber.valid && !formGroup.controls.GlobalLocationNumber.pending && (formGroup.controls.GlobalLocationNumber.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+						</label>
+						<input [readonly]="!(pageConfig.canEdit || pageConfig.canAdd)" (change)="saveChange()" class="c-input" id="GlobalLocationNumber" [(ngModel)]="item.GlobalLocationNumber" formControlName="GlobalLocationNumber" type="text">
+					</div>
+
+					<div class="c-control">
+						<span class="no-warp">
+							<input (change)="saveChange()" class="c-checkbox" id="IsDisabled" formControlName="IsDisabled" type="checkbox">
+							<label class="c-label checkbox" for="IsDisabled">Inactive
+								<span *ngIf="!formGroup.controls.IsDisabled.valid && !formGroup.controls.IsDisabled.pending && (formGroup.controls.IsDisabled.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+							</label>
+						</span><br>
+						<span class="no-warp">
+							<input (change)="saveChange()" class="c-checkbox" id="IsLocked" formControlName="IsLocked" type="checkbox">
+							<label class="c-label checkbox" for="IsLocked">Locked
+								<span *ngIf="!formGroup.controls.IsLocked.valid && !formGroup.controls.IsLocked.pending && (formGroup.controls.IsLocked.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+							</label>
+						</span><br>
+						<span class="no-warp">
+							<input (change)="saveChange()" class="c-checkbox" id="IsDropShip" formControlName="IsDropShip" type="checkbox">
+							<label class="c-label checkbox" for="IsDropShip">Drop-Ship
+								<span *ngIf="!formGroup.controls.IsDropShip.valid && !formGroup.controls.IsDropShip.pending && (formGroup.controls.IsDropShip.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+							</label>
+						</span><br>
+						<span class="no-warp">
+							<input (change)="saveChange()" class="c-checkbox" id="IsNettable" formControlName="IsNettable" type="checkbox">
+							<label class="c-label checkbox" for="IsNettable">Nettable
+								<span *ngIf="!formGroup.controls.IsNettable.valid && !formGroup.controls.IsNettable.pending && (formGroup.controls.IsNettable.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+							</label>
+						</span>
+					</div>
+					
+				</form> -->
+			</div>
+
+			<div *ngIf="selectedBranch">
+				<ion-list-header lines="full">
+					<ion-label color="dark">Settings</ion-label>
+				</ion-list-header>
+				<ion-list>
+					<ion-item *ngFor="let i of optionGroup" [color]="segmentView == i.Code? 'primary': '' " button detail="true" lines="full" class="clickable" (click)="loadNode(i)">
+						<ion-label class="ion-text-wrap">
+							<h3>{{i.Name}}</h3>
+							<p *ngIf="i.Remark">{{i.Remark}}</p>
+						</ion-label>
+					</ion-item>
+				</ion-list>
+			</div>
+			<div class="ion-padding" style="padding-bottom: 0;"></div>
+		</div>
+	</ion-fab>
+
+	<!-- <app-page-message [itemsLength]="subOptions.length" [showSpinner]="pageConfig.showSpinner"></app-page-message> -->
+
+	<div class="ion-padding" *ngIf="selectedBranch" style="min-width: 300px;">
+
+		<app-dynamic-config *ngIf="loadedConfig" [configItem]="configList" [branch]="selectedBranch" [options]="subOptions" (savedConfig)="savedConfig($event)"></app-dynamic-config>
+		<!-- <pre>{{subOptions | json}}</pre>
+		<pre>{{items | json}}</pre> -->
+
+	</div>
+
+</ion-content>

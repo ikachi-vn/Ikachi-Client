@@ -1,0 +1,85 @@
+<ion-header>
+  <app-list-toolbar pageTitle="Retail Store" [pageConfig]="pageConfig" [selectedItems]="selectedItems" [query]="query">
+  </app-list-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-grid fixed>
+    <ion-row class="hr-group">
+      <ion-col size="12" size-sm="12" size-md="12" size-xl="6">
+        <ion-card>
+          <div>
+            <ion-text color="dark">
+              Rate Of Return
+            </ion-text>
+          </div>
+          <!-- <ion-card-header class="background"> -->
+
+          <!-- </ion-card-header> -->
+
+          <ion-card-content>
+            <!-- Gauge Chart -->
+            <div id="RateOfReturnChart" style="width: 100%; height: 100%"></div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="12" size-sm="12" size-md="12" size-xl="6">
+        <ion-card>
+          <div>
+            <ion-text color="dark">
+              Customer Retention
+            </ion-text>
+          </div>
+          <!-- <ion-card-header class="background"> -->
+          <!-- Line Chart -->
+          <!-- <div id="FleetChart" style="width: 100%; height: 100%"></div> -->
+          <!-- </ion-card-header> -->
+
+          <ion-card-content>
+            <!-- Trendline Chart -->
+            <div id="CustomerRetentionChart" style="width: 100%; height: 100%"></div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="12" size-sm="12" size-md="12" size-xl="6">
+        <ion-card>
+          <div>
+            <ion-text color="dark">
+              Rate Of Return By Category
+            </ion-text>
+          </div>
+          <!-- <ion-card-header class="background"> -->
+          <!-- Line Chart -->
+          <!-- <div id="FleetChart" style="width: 100%; height: 100%"></div> -->
+          <!-- </ion-card-header> -->
+
+          <ion-card-content>
+            <!-- Line Chart -->
+            <div id="RateOfReturnCatergoryChart" style="width: 100%; height: 100%"></div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="12" size-sm="12" size-md="12" size-xl="6">
+        <ion-card>
+          <div>
+            <ion-text color="dark">
+              Number Of New & Returning Customers
+            </ion-text>
+          </div>
+          <!-- <ion-card-header class="background"> -->
+          <!-- Line Chart -->
+          <!-- <div id="FleetChart" style="width: 100%; height: 100%"></div> -->
+          <!-- </ion-card-header> -->
+
+          <ion-card-content>
+            <!-- Group Column Chart -->
+            <div id="NumberOfCustomerChart" style="width: 100%; height: 100%"></div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -1,0 +1,272 @@
+<ion-header>
+	<app-list-toolbar [NoBorder]="true" selectedTitle="{{selectedItems.length}} lịch hẹn" pageTitle="Danh sách lịch hẹn" [ShowArchive]="false" [ShowExport]="false" [ShowImport]="false" [ShowHelp]="false" [ShowFeature]="false" [ShowRefresh]="false" [ShowAdd]="false" [ShowSearch]="false" [ShowPopover]="true" [pageConfig]="pageConfig" [selectedItems]="selectedItems" [query]="query" (add)="add()" (refresh)="refresh()" (help)="help()" (unselect)="unselect()" (deleteItems)="deleteItems()" (presentPopover)="presentPopover($event)"></app-list-toolbar>
+
+
+
+	<!-- <ion-toolbar *ngIf="pageConfig.isShowSearch" class="no-padding">
+		<ion-buttons slot="primary">
+			<ion-button (click)="scanQRCode()">
+				<ion-icon slot="icon-only" name="qr-code-outline"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+		<span class="header-icon ">
+			<ion-icon name="qr-code-outline"></ion-icon>
+		</span>
+		<ion-searchbar [(ngModel)]="query.CustomerName" (ionChange)="search($event)" placeholder="Tìm khách hàng..."></ion-searchbar>
+	</ion-toolbar> -->
+
+	<div class="toggleGridview">
+		<section class="table">
+		  <header class="bold">
+			<!-- <div class="col-checkbox cell "></div> -->
+			<div class="col-id cell " (click)="sortToggle('Id')">Id
+			  <ion-icon class="min-btn" *ngIf="sort.Id" [name]="sort.Id == 'Id'?'arrow-down': 'arrow-up'"></ion-icon>
+			  <ion-icon class="min-btn" (click)="pageConfig.isShowSearch = !pageConfig.isShowSearch" *ngIf="query.Id"
+				name="search" color="primary"></ion-icon>
+			</div>
+			<div class="col-date cell" (click)="sortToggle('AptDate')">Lịch hẹn
+			  <ion-icon class="min-btn" *ngIf="sort.AptDate"
+				[name]="sort.AptDate == 'AptDate'?'arrow-down': 'arrow-up'"></ion-icon>
+			  <ion-icon class="min-btn" (click)="pageConfig.isShowSearch = !pageConfig.isShowSearch" *ngIf="query.Keyword"
+				name="search" color="primary"></ion-icon>
+			</div>
+			<div class="col-name cell" (click)="sortToggle('ServiceName')">Nội dung
+			  <ion-icon class="min-btn" *ngIf="sort.ServiceName"
+				[name]="sort.ServiceName == 'ServiceName'?'arrow-down': 'arrow-up'"></ion-icon>
+			  <ion-icon class="min-btn" (click)="pageConfig.isShowSearch = !pageConfig.isShowSearch"
+				*ngIf="query.ServiceName" name="search" color="primary"></ion-icon>
+			</div>
+			<div class="col-code cell" (click)="sortToggle('CustomerID')">Bệnh nhân
+			  <ion-icon class="min-btn" *ngIf="sort.CustomerID"
+				[name]="sort.CustomerID == 'CustomerID'?'arrow-down': 'arrow-up'"></ion-icon>
+			  <ion-icon class="min-btn" (click)="pageConfig.isShowSearch = !pageConfig.isShowSearch"
+				*ngIf="query.CustomerID" name="search" color="primary"></ion-icon>
+			</div>
+			<div class="col-phone cell" (click)="sortToggle('PhoneNumber')">Số điện thoại
+			  <ion-icon class="min-btn" *ngIf="sort.PhoneNumber" [name]="sort.PhoneNumber == 'PhoneNumber'?'arrow-down': 'arrow-up'">
+			  </ion-icon>
+			  <ion-icon class="min-btn" (click)="pageConfig.isShowSearch = !pageConfig.isShowSearch" *ngIf="query.Status"
+				name="search" color="primary"></ion-icon>
+			</div>
+			<div class="col-status cell" (click)="sortToggle('Status')">Trạng thái
+				<ion-icon class="min-btn" *ngIf="sort.Status" [name]="sort.Status == 'Status'?'arrow-down': 'arrow-up'">
+				</ion-icon>
+				<ion-icon class="min-btn" (click)="pageConfig.isShowSearch = !pageConfig.isShowSearch" *ngIf="query.Status"
+				  name="search" color="primary"></ion-icon>
+			  </div>
+		  </header>
+	
+		  <form (submit)="refresh()" action="#">
+			<header class="filter" *ngIf="pageConfig.isShowSearch">
+			  <!-- <div class="col-checkbox cell "></div> -->
+			  <div class="col-id cell ">
+				<input [ngModelOptions]="{standalone: true}" [(ngModel)]="query.Id" class="c-input"
+				  [ngClass]="{active: query.Id}" type="text">
+				<ion-icon class="min-btn" (click)="query.Id=''; refresh()" *ngIf="query.Id" name="close-circle-outline">
+				</ion-icon>
+			  </div>
+			  <div class="col-date cell">
+				<input [ngModelOptions]="{standalone: true}" [(ngModel)]="query.AptDate" class="c-input"
+				  [ngClass]="{active: query.AptDate}" type="text">
+				<ion-icon class="min-btn" (click)="query.AptDate=''; refresh()" *ngIf="query.AptDate"
+				  name="close-circle-outline"></ion-icon>
+			  </div>
+			  <div class="col-name cell">
+				<input [ngModelOptions]="{standalone: true}" [(ngModel)]="query.ServiceName" class="c-input"
+				  [ngClass]="{active: query.ServiceName}" type="text">
+				<ion-icon class="min-btn" (click)="query.ServiceName=''; refresh()" *ngIf="query.ServiceName"
+				  name="close-circle-outline"></ion-icon>
+			  </div>
+			  <div class="col-code cell">
+				<input [ngModelOptions]="{standalone: true}" [(ngModel)]="query.CustomerID" class="c-input"
+				  [ngClass]="{active: query.CustomerID}" type="text">
+				<ion-icon class="min-btn" (click)="query.CustomerID=''; refresh()" *ngIf="query.CustomerID"
+				  name="close-circle-outline"></ion-icon>
+			  </div>
+			  <div class="col-phone cell">
+				<input [ngModelOptions]="{standalone: true}" [(ngModel)]="query.PhoneNumber" class="c-input"
+				  [ngClass]="{active: query.PhoneNumber}" type="text">
+				<ion-icon class="min-btn" (click)="query.PhoneNumber=''; refresh()" *ngIf="query.PhoneNumber"
+				  name="close-circle-outline"></ion-icon>
+			  </div>
+			  <div class="col-status cell">
+				<input [ngModelOptions]="{standalone: true}" [(ngModel)]="query.Status" class="c-input"
+				  [ngClass]="{active: query.Status}" type="text">
+				<ion-icon class="min-btn" (click)="query.Status=''; refresh()" *ngIf="query.Status"
+				  name="close-circle-outline"></ion-icon>
+			  </div>
+			  <button mat-raised-button type="submit" style="display:none">Search</button>
+			</header>
+		  </form>
+		</section>
+	</div>
+</ion-header>
+
+<ion-content *ngIf="!scanning" appScrollbarTheme class="header-table">
+	<ion-refresher [disabled]="!pageConfig.refresher" [disabled]="!pageConfig.refresher" slot="fixed" (ionRefresh)="refresh($event)">
+		<ion-refresher-content></ion-refresher-content>
+	</ion-refresher>
+
+	<app-page-message [itemsLength]="items.length" [showSpinner]="pageConfig.showSpinner"></app-page-message>
+
+	<div class="toggleGridview">
+		<div *ngIf="items.length && pageConfig.showSpinner==false">
+			<section class="table">
+			  <app-page-message [itemsLength]="items.length" [showSpinner]="pageConfig.showSpinner"></app-page-message>
+			  <div *ngIf="items.length && pageConfig.showSpinner==false">
+				<section class="table">
+				  <ion-list>
+					<div *ngFor="let i of items">
+					  <div class="row" [ngClass]="{selected: i.checked}" [ngStyle]="{'border-left': 'solid 5px rgba(var(--ion-color-' + i.ApprovalStatus?.Color + '-rgb, 0, 0, 0), 1)'}">
+			
+						<div class="row-1">
+						  <!-- <div class="col-checkbox cell">
+							<input (click)="changeSelection(i, $event)" class="c-checkbox" [(ngModel)]="i.checked" type="checkbox">
+						  </div> -->
+						  <div class="col-id cell" (click)="showDetail(i)">
+							{{i.ID}}
+						  </div>
+						  <div class="col-date cell" (click)="showDetail(i)">
+							{{i.AptDate | date:'dd/MM/yyyy'}}
+							<small *ngIf="i.AptTime">{{i.AptTime}}</small>
+						  </div>
+						  <div class="col-name cell" (click)="showDetail(i)">
+							{{i.ServiceName}}
+						  </div>
+						  <div class="col-code cell">
+							{{i.PatientName}}
+						  </div>
+						  <div class="col-phone cell">
+							{{i.PatientPhone}}
+						  </div>
+						  <div class="col-status cell" (click)="showDetail(i)">
+							<span class="bar-holder">
+							  <ion-text class="bar-title" [color]="i.ApprovalStatus?.Color">{{i.ApprovalStatus?.Name}}</ion-text>
+							  <span class="bar" [ngClass]="{active: s.Id==i.ApprovalStatus?.Id}" [ngStyle]="{'background-color': 'var(--ion-color-'+s.Color+')'}" *ngFor="let s of statusList" [title]="s.Name"></span>
+							</span>
+						  </div>
+						</div>
+					  </div>
+					</div>
+				  </ion-list>
+		
+		
+		
+				</section>
+			  </div>
+			</section>
+		</div>
+	</div>
+
+
+	<div class="toggleMobileView">
+		<ion-list lines="none">
+			<ion-virtual-scroll [items]="items" approxItemHeight="290px">
+				<ion-item-sliding *virtualItem="let i; let itemBounds = bounds; let j = index;">
+					<ion-item class="ion-no-margin ion-no-padding">
+	
+						<ion-card class="booking ion-no-margin ion-margin-horizontal">
+	
+							<div class="logo" [ngClass]="{selected: i.checked}" (click)="i.checked =!i.checked; changeSelection(i)"></div>
+	
+							<ion-card-header (click)="showDetail(i)">
+								<ion-card-title>
+									<ion-text >
+										{{i.Subject}}
+									</ion-text>
+									<ion-text class="ion-float-right" color="medium">
+										<span class="ngay-hd">{{i.AptDateText}} <small *ngIf="i.AptTimeText ">{{i.AptTimeText}}</small></span>
+									</ion-text>
+								</ion-card-title>
+								<ion-card-subtitle>
+	
+									<ion-text >
+										{{i.ServiceName}}
+									</ion-text>
+									<!-- <small>
+										{{i.Status.Name}}
+									</small> -->
+	
+	
+	
+								</ion-card-subtitle>
+							</ion-card-header>
+	
+							<ion-card-content no-padding padding-horizontal>
+								<div>
+									<table class="card">
+										<tr>
+											<td>
+												<ion-icon color="primary" name="people-circle-outline"></ion-icon>
+											</td>
+											<td style="text-transform: uppercase">
+	
+												<ion-text>
+													{{i.PatientName}}
+												</ion-text>
+												<ion-text color="primary">
+													<small>#{{i.MRCode}}</small>
+												</ion-text>
+	
+											</td>
+										</tr>
+	
+	
+										<tr *ngIf="i.ProcessStaffName">
+											<td>
+												<ion-icon color="primary" name="people-circle-outline"></ion-icon>
+											</td>
+											<td style="text-transform: uppercase">
+												<ion-text>
+													<ion-text color="medium"><small>{{i.ProcessStaffName}}</small></ion-text>
+												</ion-text>
+											</td>
+										</tr>
+									</table>
+								</div>
+							</ion-card-content>
+	
+							<ion-item class="card-footer" detail lines="none">
+								<ion-button *ngIf="i.PatientPhone" [href]="'tel:'+i.PatientPhone" fill="clear" slot="start" (click)="$event.stopPropagation()">
+									<ion-icon slot="start" name="call" color="danger"></ion-icon>
+									{{i.PatientPhone}}
+								</ion-button>
+								<ion-button (click)="showDetail(i)" color="secondary" fill="clear" slot="end">CHI TIẾT LỊCH HẸN
+								</ion-button>
+							</ion-item>
+						</ion-card>
+					</ion-item>
+				</ion-item-sliding>
+			</ion-virtual-scroll>
+		</ion-list>
+	</div>
+	  
+
+
+	<ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="pageConfig.canAdd && !query.IsDisabled">
+		<ion-fab-button color="secondary" (click)="add()">
+			<ion-icon name="add-outline"></ion-icon>
+		</ion-fab-button>
+	</ion-fab>
+
+	<!-- <ion-infinite-scroll color="primary" threshold="20%" (ionInfinite)="loadData($event)" [disabled]="!pageConfig.infiniteScroll || pageConfig.isEndOfData">
+		<ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
+	</ion-infinite-scroll> -->
+</ion-content>
+
+<ion-content *ngIf="scanning" no-scroll class="cameraFrame">
+	<div class="frame">
+		<div class="blink-line">
+		</div>
+	</div>
+	<ion-fab vertical="bottom" horizontal="center" slot="fixed">
+		<ion-fab-button id='closeCamera' color="secondary" (click)="closeCamera()">
+			<ion-icon name="close"></ion-icon>
+		</ion-fab-button>
+	</ion-fab>
+	<!-- <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+		<ion-fab-button color="warning" (click)="lightCamera()">
+			<ion-icon name="flashlight"></ion-icon>
+		</ion-fab-button>
+	</ion-fab> -->
+</ion-content>

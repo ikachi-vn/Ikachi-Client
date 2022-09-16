@@ -1,0 +1,21 @@
+<div class="message-container" *ngIf="showSpinner || !itemsLength">
+  <div *ngIf="showSpinner" class="page-loading">
+    <ion-spinner name="dots"></ion-spinner>
+  </div>
+  <div class="empty-message" *ngIf="!itemsLength && showSpinner==false">
+    <div class="icon">
+      <img appSvgImage style="width: 51vw; max-width: 300px;" src="../../../assets/undraw_no_data_qbuo.svg">
+    </div>
+    <div class="message">
+      <div class="title">
+        {{message}}
+      </div>
+      <div class="detail">
+        <ion-text>
+          {{subMessage}}
+        </ion-text>
+      </div>
+    </div>
+  </div>
+
+</div>

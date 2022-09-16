@@ -1,0 +1,119 @@
+<ion-toolbar [ngClass]="{'toolbar-no-border': NoBorder}">
+	<ion-buttons slot="start" class="ion-hide-sm-down_">
+		<ion-button color="dark" *ngIf="!selectedItems.length">
+			{{pageTitle}}
+		</ion-button>
+		<ion-button color="dark" *ngIf="selectedItems.length" (click)="emit('unselect')">
+			{{selectedTitle || selectedItems.length +' dòng'}}
+		</ion-button>
+	</ion-buttons>
+
+	<ion-buttons slot="end" *ngIf="!(selectedItems.length && canSelect)">
+		<ion-button *ngIf="ShowAdd && pageConfig.canAdd && !query.IsDisabled" (click)="emit('add')" title="Thêm mới">
+			<ion-icon slot="icon-only" name="add-outline"></ion-icon>
+		</ion-button>
+
+		<ng-content></ng-content>
+
+		<ion-button *ngIf="pageConfig.canSubmitSalesmanOrdersForApproval" (click)="emit('submitOrdersForApproval')" title="Gửi duyệt">
+			<ion-icon slot="icon-only" name="send-outline"></ion-icon>
+		</ion-button>
+
+		<span class="split ion-hide-sm-down" *ngIf="pageConfig.canSubmitSalesmanOrdersForApproval">|</span>
+
+		<ion-button *ngIf="ShowSearch" title="Tìm kiếm..." (click)="pageConfig.isShowSearch = !pageConfig.isShowSearch">
+			<ion-icon slot="icon-only" name="search-outline"></ion-icon>
+		</ion-button>
+		<ion-button *ngIf="ShowRefresh" (click)="emit('refresh')" title="Refresh">
+			<ion-icon slot="icon-only" name="reload-outline"></ion-icon>
+		</ion-button>
+
+		<ion-button *ngIf="ShowPopover" outline="true" color="primary" (click)="emit('presentPopover')">
+			<ion-icon name="calendar-outline"></ion-icon>
+			<ion-label color="medium">{{query.OrderDate}}</ion-label>
+		</ion-button>
+
+		<ion-button title="Thu tiền" *ngIf="pageConfig.canCreateReceipt" (click)="emit('createReceipt')">
+			<ion-icon slot="icon-only" name="cash-outline"></ion-icon>
+		</ion-button>
+
+		<span class="split ion-hide-sm-down" *ngIf="ShowExport && pageConfig.canExport && pageConfig.canImport">|</span>
+
+		<ion-button class="ion-hide-sm-down" *ngIf="ShowExport && pageConfig.canExport" (click)="emit('export')" title="Export">
+			<ion-icon slot="icon-only" name="cloud-download-outline"></ion-icon>
+		</ion-button>
+		<ion-button class="ion-hide-sm-down" *ngIf="ShowImport && pageConfig.canImport" (click)="onClickImport()" title="Import">
+			<ion-icon slot="icon-only" name="cloud-upload-outline"></ion-icon>
+		</ion-button>
+		<input class="hide-all" #importfile type="file" accept=".xlsx" (change)="importFileChange($event)" />
+
+		<span class="split ion-hide-sm-down" *ngIf="ShowHelp || ShowFeature">|</span>
+
+		<ion-button class="ion-hide-sm-down_" *ngIf="ShowArchive" (click)="query.IsDisabled = !query.IsDisabled; emit('refresh');" title="Xem mục đã dừng sử dụng - Disabled items">
+			<ion-icon slot="icon-only" [name]="query.IsDisabled ? 'archive' : 'archive-outline'"></ion-icon>
+		</ion-button>
+		<ion-button *ngIf="ShowHelp" title="Trợ giúp" (click)="emit('help')">
+			<ion-icon slot="icon-only" name="help-circle-outline"></ion-icon>
+		</ion-button>
+		<ion-button *ngIf="ShowFeature" title="Chức năng mở rộng" (click)="pageConfig.isShowFeature = !pageConfig.isShowFeature;">
+			<ion-icon slot="icon-only" [name]="pageConfig.isShowFeature? 'close-outline':'list-circle-outline'">
+			</ion-icon>
+		</ion-button>
+
+	</ion-buttons>
+	<ion-buttons slot="end" *ngIf="selectedItems.length && canSelect">
+
+		<ion-button title="Bỏ chọn" (click)="emit('unselect')">
+			<ion-icon color="primary" slot="icon-only" name="chevron-back-outline"></ion-icon>
+		</ion-button>
+
+		<span class="split ion-hide-sm-down" *ngIf="ShowHelp || ShowFeature">|</span>
+
+		<ng-content select="[selected]"></ng-content>
+
+		<ion-button *ngIf="pageConfig.canReceive &&  !query.IsDisabled" (click)="emit('submitReceipt')" title="Nhận hàng">
+			<ion-icon color="success" slot="icon-only" name="bag-check-outline"></ion-icon>
+		</ion-button>
+
+		<ion-button *ngIf="pageConfig.canSubmitOrdersForApproval &&  !query.IsDisabled" (click)="emit('submitOrdersForApproval')" title="Gửi duyệt">
+			<ion-icon color="success" slot="icon-only" name="send-outline"></ion-icon>
+		</ion-button>
+
+		<span class="split ion-hide-sm-down" *ngIf="pageConfig.canSubmitOrdersForApproval">|</span>
+
+		<ion-button title="Duyệt đơn hàng" *ngIf="pageConfig.canApprove && !query.IsDisabled" (click)="emit('approveOrders')">
+			<ion-icon color="success" slot="icon-only" name="thumbs-up-outline"></ion-icon>
+		</ion-button>
+		<ion-button title="Trả lại - không duyệt đơn hàng" *ngIf="pageConfig.canApprove && !query.IsDisabled" (click)="emit('disapproveOrders')">
+			<ion-icon color="warning" slot="icon-only" name="thumbs-down-outline"></ion-icon>
+		</ion-button>
+		<ion-button title="Hủy đơn hàng" *ngIf="pageConfig.canCancel  && !query.IsDisabled" (click)="emit('cancelOrders')">
+			<ion-icon color="danger" slot="icon-only" name="ban-outline"></ion-icon>
+		</ion-button>
+		<ion-button title="Thu tiền" *ngIf="pageConfig.canCreateReceipt" (click)="emit('createReceipt')">
+			<ion-icon slot="icon-only" name="cash-outline"></ion-icon>
+		</ion-button>
+
+		<span class="split ion-hide-sm-down" *ngIf="pageConfig.canApprove || pageConfig.canCancel">|</span>
+
+		<ion-button title="Gộp đơn hàng" *ngIf="pageConfig.canMerge && selectedItems.length>1 && !query.IsDisabled" (click)="emit('mergeOrders')">
+			<ion-icon color="warning" slot="icon-only" name="git-pull-request"></ion-icon>
+		</ion-button>
+		<ion-button title="Chia đơn hàng" *ngIf="pageConfig.canSplit && selectedItems.length==1 && !query.IsDisabled" (click)="emit('splitOrder')">
+			<ion-icon color="warning" slot="icon-only" name="git-branch"></ion-icon>
+		</ion-button>
+
+		<ion-button [title]="query.IsDisabled? 'Mở lại':'Lưu trữ - cất cho gọn'" *ngIf="pageConfig.canArchive" (click)="emit('archiveItems')">
+			<ion-icon color="warning" slot="icon-only" [name]="query.IsDisabled? 'arrow-undo':'archive'"></ion-icon>
+		</ion-button>
+		<ion-button title="Xóa bỏ" *ngIf="pageConfig.canDelete" (click)="emit('deleteItems')">
+			<ion-icon color="danger" slot="icon-only" name="trash-outline"></ion-icon>
+		</ion-button>
+		<span class="split ion-hide-sm-down">|</span>
+		<ion-button *ngIf="ShowFeature" title="Chức năng mở rộng" (click)="pageConfig.isShowFeature = !pageConfig.isShowFeature;">
+			<ion-icon slot="icon-only" [name]="pageConfig.isShowFeature? 'close-outline':'list-circle-outline'">
+			</ion-icon>
+		</ion-button>
+
+	</ion-buttons>
+</ion-toolbar>

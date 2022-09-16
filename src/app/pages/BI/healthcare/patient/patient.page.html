@@ -1,0 +1,88 @@
+<ion-header>
+  <app-list-toolbar pageTitle="Patient" [pageConfig]="pageConfig" [selectedItems]="selectedItems" [query]="query">
+  </app-list-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-grid fixed>
+    <ion-row class="hr-group">
+      <ion-col size="12" size-sm="12" size-md="12" size-xl="8">
+        <ion-row class="hr-group">
+          <ion-col size="12" size-sm="12" size-md="12" size-xl="8">
+            <ion-card>
+              <div>
+                <ion-text color="dark">
+                  Occupancy
+                </ion-text>
+              </div>
+              <!-- <ion-card-header class="background"> -->
+    
+              <!-- </ion-card-header> -->
+    
+              <ion-card-content>
+                <!-- Gauge Chart -->
+                <div id="OccupancyChart" style="width: 100%; height: 100%"></div>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+
+          <ion-col size="12" size-sm="12" size-md="12" size-xl="4">
+            <ion-card>
+              <div>
+                <ion-text color="dark">
+                  Forecasted Patient Turnover EOM
+                </ion-text>
+              </div>
+              <!-- <ion-card-header class="background"> -->
+    
+              <!-- </ion-card-header> -->
+    
+              <ion-card-content>
+                <!-- Line Chart -->
+                <!-- <div id="LengthOfStayChart" style="width: 100%; height: 100%"></div> -->
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+
+          <ion-col size="12" size-sm="12" size-md="12" size-xl="12">
+            <ion-card>
+              <div>
+                <ion-text color="dark">
+                  Efficency & Costs
+                </ion-text>
+              </div>
+              <!-- <ion-card-header class="background"> -->
+    
+              <!-- </ion-card-header> -->
+    
+              <ion-card-content>
+                <!-- Multilevel Tree  Chart -->
+                <div id="EfficencyCostChart" style="width: 100%; height: 100%"></div>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+
+      <ion-col size="12" size-sm="12" size-md="12" size-xl="4">
+        <ion-card>
+          <div>
+            <ion-text color="dark">
+              Satisfaction & Service Indicators
+            </ion-text>
+          </div>
+          <!-- <ion-card-header class="background"> -->
+
+          <!-- </ion-card-header> -->
+
+          <ion-card-content>
+            <!-- Sorted Bar Chart -->
+            <div id="SatisfactionServiceChart" style="width: 100%; height: 100%"></div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+
+    </ion-row>
+  </ion-grid>
+</ion-content>

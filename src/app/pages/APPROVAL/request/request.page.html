@@ -1,0 +1,111 @@
+<ion-header>
+	<app-list-toolbar pageTitle="Danh sách" [ShowFeature]="false" [pageConfig]="pageConfig" [selectedItems]="selectedItems" [query]="query" (add)="add()" (refresh)="refresh()" (export)="export()" (import)="import($event)" (help)="help()" (unselect)="unselect()" (archiveItems)="archiveItems()" (deleteItems)="deleteItems()"></app-list-toolbar>
+
+	<section class="table">
+		<header class="bold ion-hide-sm-down">
+			<div class="col-checkbox cell"></div>
+			<div class="col-id cell ion-hide-sm-down" (click)="sortToggle('Id')">
+				Id
+				<ion-icon class="min-btn" *ngIf="sort.Id" [name]="sort.Id == 'Id'?'arrow-down': 'arrow-up'"></ion-icon>
+				<ion-icon class="min-btn" (click)="pageConfig.isShowSearch = !pageConfig.isShowSearch" *ngIf="query.Id" name="search" color="primary"></ion-icon>
+			</div>
+
+			<div class="col-name cell" (click)="sortToggle('Name')">
+				Tên request
+				<ion-icon class="min-btn" *ngIf="sort.Name" [name]="sort.Name == 'Name'?'arrow-down': 'arrow-up'"></ion-icon>
+				<ion-icon class="min-btn" (click)="pageConfig.isShowSearch = !pageConfig.isShowSearch" *ngIf="query.Name" name="search" color="primary"></ion-icon>
+			</div>
+
+      <div class="col-info cell" (click)="sortToggle('RequestType')">
+				Loại request
+				<ion-icon class="min-btn" *ngIf="sort.IDType" [name]="sort.IDType == 'IDType'?'arrow-down': 'arrow-up'"></ion-icon>
+				<ion-icon class="min-btn" (click)="pageConfig.isShowSearch = !pageConfig.isShowSearch" *ngIf="query.IDType" name="search" color="primary"></ion-icon>
+			</div>
+
+      <div class="col-info cell" (click)="sortToggle('RequestStatus')">
+				Trạng thái
+				<ion-icon class="min-btn" *ngIf="sort.IDStatus" [name]="sort.IDStatus == 'IDStatus'?'arrow-down': 'arrow-up'"></ion-icon>
+				<ion-icon class="min-btn" (click)="pageConfig.isShowSearch = !pageConfig.isShowSearch" *ngIf="query.IDStatus" name="search" color="primary"></ion-icon>
+			</div>
+
+      <div class="col-info cell" (click)="sortToggle('CreatedBy')">
+				Người tạo
+				<ion-icon class="min-btn" *ngIf="sort.CreatedBy" [name]="sort.CreatedBy == 'CreatedBy'?'arrow-down': 'arrow-up'"></ion-icon>
+				<ion-icon class="min-btn" (click)="pageConfig.isShowSearch = !pageConfig.isShowSearch" *ngIf="query.CreatedBy" name="search" color="primary"></ion-icon>
+			</div>
+
+      <div class="col-info cell" (click)="sortToggle('CreatedDate')">
+				Ngày tạo
+				<ion-icon class="min-btn" *ngIf="sort.CreatedDate" [name]="sort.CreatedDate == 'CreatedDate'?'arrow-down': 'arrow-up'"></ion-icon>
+				<ion-icon class="min-btn" (click)="pageConfig.isShowSearch = !pageConfig.isShowSearch" *ngIf="query.CreatedDate" name="search" color="primary"></ion-icon>
+			</div>
+		</header>
+
+    
+		<form (submit)="refresh()" action="#">
+			<header class="filter" *ngIf="pageConfig.isShowSearch">
+				<div class="col-checkbox cell"></div>
+				<div class="col-id cell ion-hide-sm-down">
+					<input [ngModelOptions]="{standalone: true}" [(ngModel)]="query.Id" class="c-input" [ngClass]="{active: query.Id}" type="text">
+					<ion-icon class="min-btn" (click)="query.Id=''; refresh()" *ngIf="query.Id" name="close-circle-outline"></ion-icon>
+				</div>
+				<div class="col-name cell">
+					<input placeholder="Tìm theo mã, tên, số điện thoại" [ngModelOptions]="{standalone: true}" [(ngModel)]="query.Name" class="c-input" [ngClass]="{active: query.Name}" type="text">
+					<ion-icon class="min-btn" (click)="query.Name=''; refresh()" *ngIf="query.Name" name="close-circle-outline"></ion-icon>
+				</div>
+				<div class="col-info cell ion-hide-sm-down">
+					<input [ngModelOptions]="{standalone: true}" [(ngModel)]="query.IDType" class="c-input" [ngClass]="{active: query.IDType}" type="text">
+					<ion-icon class="min-btn" (click)="query.IDType=''; refresh()" *ngIf="query.IDType" name="close-circle-outline"></ion-icon>
+				</div>
+				<div class="col-info cell ion-hide-sm-down">
+					<input [ngModelOptions]="{standalone: true}" [(ngModel)]="query.IDStatus" class="c-input" [ngClass]="{active: query.IDStatus}" type="text">
+					<ion-icon class="min-btn" (click)="query.IDStatus=''; refresh()" *ngIf="query.IDStatus" name="close-circle-outline"></ion-icon>
+				</div>
+				<div class="col-info cell ion-hide-sm-down">
+					<input [ngModelOptions]="{standalone: true}" [(ngModel)]="query.CreatedBy" class="c-input" [ngClass]="{active: query.CreatedBy}" type="text">
+					<ion-icon class="min-btn" (click)="query.CreatedBy=''; refresh()" *ngIf="query.CreatedBy" name="close-circle-outline"></ion-icon>
+				</div>
+				<div class="col-info cell ion-hide-sm-down">
+					<input [ngModelOptions]="{standalone: true}" [(ngModel)]="query.CreatedDate" class="c-input" [ngClass]="{active: query.CreatedDate}" type="text">
+					<ion-icon class="min-btn" (click)="query.CreatedDate=''; refresh()" *ngIf="query.CreatedDate" name="close-circle-outline"></ion-icon>
+				</div>
+
+
+
+				<button mat-raised-button type="submit" style="display:none">Search</button>
+			</header>
+		</form>
+	</section>
+</ion-header>
+
+<ion-content appScrollbarTheme class="header-table">
+	<app-page-message [itemsLength]="items.length" [showSpinner]="pageConfig.showSpinner"></app-page-message>
+
+	<div *ngIf="items.length && pageConfig.showSpinner==false">
+		<section class="table">
+			<ion-virtual-scroll [items]="items" approxItemHeight="27px">
+				<ng-container *virtualItem="let i; let itemBounds = bounds; let j = index;">
+					<div class="row" [ngClass]="{odd: j % 2 != 0}" [ngClass]="{selected: i.checked}">
+						<div class="col-checkbox cell">
+							<input (click)="changeSelection(i, $event)" class="c-checkbox" [(ngModel)]="i.checked" type="checkbox">
+						</div>
+						<div (click)="nav(this.pageConfig.pageName+'/'+i.Id,'forward')" class="col-id cell ion-hide-sm-down">
+							{{i.Id}}
+						</div>
+						<div (click)="nav(this.pageConfig.pageName+'/'+i.Id,'forward')" class="col-name cell">
+							{{i.Name}}
+						</div>
+						<div class="col-info cell ion-hide-sm-down">{{i.IDType}}</div>
+						<div class="col-info cell ion-hide-sm-down">{{i.IDStatus}}</div>
+						<div class="col-info cell ion-hide-sm-down">{{i.CreatedBy}}</div>
+						<div class="col-info cell ion-hide-sm-down">{{i.CreatedDate}}</div>
+					</div>
+				</ng-container>
+			</ion-virtual-scroll>
+		</section>
+	</div>
+
+	<ion-infinite-scroll color="primary" threshold="20%" (ionInfinite)="loadData($event)" [disabled]="!pageConfig.infiniteScroll || pageConfig.isEndOfData">
+		<ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
+	</ion-infinite-scroll>
+</ion-content>

@@ -1,0 +1,174 @@
+.main-view {
+    .chart-box {
+        flex: auto;
+        margin-top: 40px!important;
+        min-height: 150px;
+        min-width: 240px;
+        width: 240px;
+        background: var(--ion-color-tertiary-tint);
+        white-space: nowrap;
+        height: 700px;
+        border-radius: 0 0 0 18px;
+        margin: 15px;
+        
+        .title {
+            position: absolute;
+            margin-top: -30px;
+        }
+        .chart-contain {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+    }
+    .row-1 {
+        display: flex;
+        flex-flow: wrap;
+        align-items: stretch;
+        margin: 25px -16px -16px;
+        overflow: hidden;
+        overflow-x: auto;
+        padding-bottom: 20px;
+
+        ion-toolbar{
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+        .data-table {
+            margin: 0 !important;
+        }
+
+        table{
+            width: 100%;
+
+            tr{
+                td:first-child{
+                    text-align: left !important;
+                }
+                td{
+                    text-align: center;
+                    padding: 0 15px;
+                    min-width: 90px !important;
+                }
+            }
+            tr.company-name{
+                td:first-child{
+                    min-width: 240px;
+                    
+                }
+                td.stt{
+                    min-width: 10px !important;
+                    width: 50px !important;
+                }
+                td{
+                    font-weight: bold;
+                    text-transform: uppercase;
+                }
+            }
+            .company-name:first-child{
+                height: 60px;
+            }
+
+            tr.total{
+                background-color: rgba(var(--ion-color-primary-rgb, 0, 0, 0), .1);
+                td{
+                    font-weight: bold;
+                }
+            }
+
+            tr.caption{
+                td{
+                    background-color: rgba(var(--ion-color-primary-rgb, 0, 0, 0), .1);
+                }
+            }
+
+            tr.sub-line{
+                td{
+                    
+                }
+            }
+
+            tr.sub-line-2{
+                td{
+                    
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 768px){
+    .main-view 
+    {
+        .chart-box {
+            height: 800px;
+            border-radius: 6px;
+        }
+        .row-1 {
+            margin: 0;
+            padding-bottom: 0px;
+        }
+    }
+
+    
+}
+
+.value-input {
+    padding: 32px 0 5px;
+}
+
+.hr-group:first-child {
+    padding-top: 0 !important;
+}
+
+ion-card {
+    background: white;
+    div {
+        font-weight: bold;
+        text-align: center;
+    }
+    ion-card-header {
+        // height: 150px; //Change here
+        padding: 0 20px;
+    
+    }
+    ion-card-content {
+        width: 100%;
+        font-size: 2.5rem;
+
+        
+        table {
+            width: 100%;
+            min-height: 100px;
+            tr {
+                width: 100%;
+                td {
+                    padding: 8px;
+                }
+                td.left {
+                    width: 60%;
+                }
+            }
+        }
+    }
+}
+
+
+
+.background {
+    background: #dedede;
+}
+
+.central-1 {
+    background-color: #baffc960;
+}
+
+.central-2 {
+    background-color: #ffdfba60;
+}
+
+.fade {
+    fill-opacity: 70%;
+}

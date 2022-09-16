@@ -1,0 +1,483 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="vendor"></ion-back-button>
+            <ion-button color="dark" class="ion-hide-sm-down">
+                Nhà cung cấp
+            </ion-button>
+        </ion-buttons>
+
+
+        <ion-buttons slot="end">
+            <app-detail-toolbar [item]="item" [pageConfig]="pageConfig" (refresh)="refresh()" (delete)="delete()" (help)="help()"></app-detail-toolbar>
+        </ion-buttons>
+    </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content appScrollbarTheme class="ion-padding">
+    <app-page-message [itemsLength] = "item? 1: 0" [showSpinner]="pageConfig.showSpinner"></app-page-message>
+	
+    <div class="main-view" *ngIf="item && pageConfig.showSpinner==false">
+        <ion-grid fixed>
+            <ion-row>
+                <ion-col class="img-holder" size="12" size-sm="300px">
+                    <div class="avatar" ng2FileDrop class="well my-drop-zone" [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)" (onFileDrop)="onFileSelected()" [uploader]="uploader">
+                        <img [src]="avatarURL" (error)="img.src = 'assets/avartar-empty.jpg'" #img>
+                        <div>
+                            <ion-button class="change-avatar" *ngIf="item.Id" color="primary" size="small" (click)="selectFile()">
+                                Đổi hình nhà cung cấp
+                            </ion-button>
+                        </div>
+
+
+                        <input style="display: none;" #importfile type="file" (change)="onFileSelected()" ng2FileSelect accept="image/*" [uploader]="uploader" />
+                    </div>
+                </ion-col>
+                <ion-col size="12" size-sm>
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col size="12" size-md="12" size-lg="12" size-xl="5">
+
+                                <!-- <div class="c-control">
+                                    <label class="c-label" for="CompanyName">Tên công ty / cửa hàng</label>
+                                    <input readonly class="c-input" [ngModel]="item.CompanyName" type="text">
+                                </div> -->
+
+                                <div class="c-control">
+                                    <label class="c-label" for="Name">Tên nhà cung cấp</label>
+                                    <input readonly class="c-input" [ngModel]="item.Name" type="text">
+                                </div>
+
+                            </ion-col>
+                            <ion-col size="12" size-md="12" size-lg="12" size-xl="5">
+
+                                <div class="c-control">
+                                    <label class="c-label" for="WorkPhone">Điện thoại</label>
+                                    <input readonly class="c-input" [ngModel]="item.WorkPhone" type="text">
+                                </div>
+
+                                <!-- <div class="c-control">
+                                    <label class="c-label" for="MobilePhone">Số điện thoại (di động)</label>
+                                    <input readonly class="c-input" [ngModel]="item.MobilePhone" type="text">
+                                </div> -->
+
+                            </ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col size="12" size-md="12" size-lg="12" size-xl="10">
+                                <div class="c-control">
+                                    <label class="c-label" for="AddressLine1">Địa chỉ</label>
+                                    <textarea readonly class="c-input" [ngModel]="item.AddressLine1" type="textarea"></textarea>
+                                </div>
+                            </ion-col>
+                        </ion-row>
+                        
+                    </ion-grid>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+
+        <div class="row-full shadow full-screen">
+            <ion-toolbar color="primary">
+                <ion-segment scrollable="true" (ionChange)="segmentChanged($event)" [value]="segmentView">
+
+                    <ion-segment-button value="s1">
+                        <ion-label>Thông tin chung</ion-label>
+                    </ion-segment-button>
+                    <ion-segment-button value="s2">
+                        <ion-label>Sản phẩm</ion-label>
+                    </ion-segment-button>
+                    <ion-segment-button value="s3">
+                        <ion-label>Phân tích - KPI</ion-label>
+                    </ion-segment-button>
+                    <!-- <ion-segment-button value="s4">
+                        <ion-label>MCP</ion-label>
+                    </ion-segment-button> -->
+                    <ion-segment-button value="s5">
+                        <ion-label>Công nợ - chứng từ</ion-label>
+                    </ion-segment-button>
+                    <ion-segment-button value="s6">
+                        <ion-label>Chính sách</ion-label>
+                    </ion-segment-button>
+
+                </ion-segment>
+            </ion-toolbar>
+
+            <div>
+                <div *ngIf="segmentView == 's1'">
+                    <div class="ion-padding">
+
+                        <ion-grid fixed>
+                            <form [formGroup]="formGroup">
+                                <ion-row class="hr-group">
+                                    <ion-col size="12" size-sm="12" size-md="12" size-xl="3">
+                                        <ion-list-header class="ion-no-padding">
+                                            <ion-label color="primary">Thông tin quản lý</ion-label>
+                                        </ion-list-header>
+                                    </ion-col>
+                                    <ion-col size="12" size-sm size-xl="4">
+
+                                        <div class="c-control" *ngIf="item.Id">
+                                            <label class="c-label" for="Id">Id</label>
+                                            <input class="c-input" id="Id" formControlName="Id" type="number">
+                                        </div>
+                                        <div class="c-control">
+                                            <label class="c-label" for="Code">Mã tham chiếu
+                                                <span *ngIf="!formGroup.controls.Code.valid && !formGroup.controls.Code.pending && (formGroup.controls.Code.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+                                            </label>
+                                            <input (change)="saveChange()" class="c-input" id="Code" formControlName="Code" type="text">
+                                        </div>
+
+                                        
+
+                                        <div class="c-control">
+                                            <input (change)="saveChange()" id="IsPersonal1" type="radio" [value]="true" formControlName="IsPersonal" class="c-checkbox">
+                                            <label class="c-label radio" for="IsPersonal1">
+                                                <span>Cá nhân</span>
+                                            </label>
+
+                                            <input (change)="saveChange()" id="IsPersonal2" type="radio" [value]="false" formControlName="IsPersonal" class="c-checkbox">
+                                            <label class="c-label radio" for="IsPersonal2">
+                                                <span>Tổ chức</span>
+                                                <span *ngIf="!formGroup.controls.IsPersonal.valid && !formGroup.controls.IsPersonal.pending && (formGroup.controls.IsPersonal.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+                                            </label>
+                                        </div>
+
+                                    </ion-col>
+                                    <ion-col size="12" size-sm size-xl="4">
+                                        <div class="c-control">
+                                            <label class="c-label" for="Name">Tên gọi chung
+                                                <span *ngIf="!formGroup.controls.Name.valid && !formGroup.controls.Name.pending && (formGroup.controls.Name.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+                                            </label>
+                                            <input (change)="saveChange()" class="c-input" id="Name" formControlName="Name" type="text">
+                                        </div>
+                                        <div class="c-control">
+                                            <label class="c-label" for="IDOwner">Nhân viên chăm sóc <small>IDOwner</small> 
+                                                <span *ngIf="!formGroup.controls.IDOwner.valid && !formGroup.controls.IDOwner.pending && (formGroup.controls.IDOwner.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+                                            </label>
+                                            <input (change)="saveChange()" class="c-input" id="IDOwner" formControlName="IDOwner" type="text">
+                                        </div>
+                                        <div class="c-control">
+                                            <input (change)="saveChange()" class="c-checkbox" id="IsVendor" formControlName="IsVendor" type="checkbox">
+                                            <label class="c-label checkbox" for="IsVendor">Nhà cung cấp
+                                                <span *ngIf="!formGroup.controls.IsVendor.valid && !formGroup.controls.IsVendor.pending && (formGroup.controls.IsVendor.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+                                            </label>
+                                        </div>
+                                        <div class="c-control" *ngIf="item.Id">
+                                            <input (change)="saveChange()" class="c-checkbox" id="IsDisabled" formControlName="IsDisabled" type="checkbox">
+                                            <label class="c-label checkbox" for="IsDisabled">TẠM DỪNG
+                                                <span *ngIf="!formGroup.controls.IsDisabled.valid && !formGroup.controls.IsDisabled.pending && (formGroup.controls.IsDisabled.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+                                            </label>
+                                        </div>
+                                        <div class="c-control">
+                                            <label class="c-label" for=""></label>
+                                            <ion-button *ngIf="!item.Id && pageConfig.canAdd" expand="block" (click)="saveChange()" [disabled]="!formGroup.dirty">Thêm liên hệ</ion-button>
+                                        </div>
+
+                                    </ion-col>
+                                </ion-row>
+
+                                <!-- <ion-row class="hr-group">
+                                    <ion-col size="12" size-sm="12" size-md="12" size-xl="3">
+                                        <ion-list-header class="ion-no-padding">
+                                            <ion-label color="primary">Thông tin sản phẩm</ion-label>
+                                        </ion-list-header>
+                                    </ion-col>
+                                    <ion-col size="12" size-sm size-xl="4">
+                                        
+
+                                    </ion-col>
+                                    <ion-col size="12" size-sm size-xl="4">
+                                        
+                                    </ion-col>
+                                </ion-row> -->
+
+                                <ion-row class="hr-group" *ngIf="!item.IsPersonal">
+                                    <ion-col size="12" size-sm="12" size-md="12" size-xl="3">
+                                        <ion-list-header class="ion-no-padding">
+                                            <ion-label color="primary">Thông tin doanh nghiệp</ion-label>
+                                        </ion-list-header>
+                                    </ion-col>
+                                    <ion-col size="12" size-sm size-xl="4">
+                                        <div class="c-control" >
+                                            <label class="c-label" for="CompanyName">Tên công ty / tổ chức<small>Company name</small>
+                                                <span *ngIf="!formGroup.controls.CompanyName.valid && !formGroup.controls.CompanyName.pending && (formGroup.controls.CompanyName.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+                                            </label>
+                                            <input (change)="saveChange()" class="c-input" id="CompanyName" formControlName="CompanyName" type="text">
+                                        </div>
+                                        <div class="c-control" >
+                                            <label class="c-label" for="TaxCode">Mã số thuế <small>Tax  code</small>
+                                                <span *ngIf="!formGroup.controls.TaxCode.valid && !formGroup.controls.TaxCode.pending && (formGroup.controls.TaxCode.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+                                            </label>
+                                            <input (change)="saveChange()" class="c-input" id="TaxCode" formControlName="TaxCode" type="text">
+                                        </div>
+
+                                        <div class="c-control" >
+                                            <label class="c-label" for="BankName">Tên ngân hàng <small>Bank name</small>
+                                                <span *ngIf="!formGroup.controls.BankName.valid && !formGroup.controls.BankName.pending && (formGroup.controls.BankName.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+                                            </label>
+                                            <input (change)="saveChange()" class="c-input" id="BankName" formControlName="BankName" type="number">
+                                        </div>
+
+                                        <div class="c-control" >
+                                            <label class="c-label" for="BankAccount">Số tài khoản <small>Bank account</small>
+                                                <span *ngIf="!formGroup.controls.BankAccount.valid && !formGroup.controls.BankAccount.pending && (formGroup.controls.BankAccount.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+                                            </label>
+                                            <input (change)="saveChange()" class="c-input" id="BankAccount" formControlName="BankAccount" type="number">
+                                        </div>
+
+
+                                    </ion-col>
+                                    <ion-col size="12" size-sm size-xl="4">
+                                        
+                                        <div class="c-control" >
+                                            <label class="c-label" for="Website">Website 
+                                                <span *ngIf="!formGroup.controls.Website.valid && !formGroup.controls.Website.pending && (formGroup.controls.Website.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+                                            </label>
+                                            <input (change)="saveChange()" class="c-input" id="Website" formControlName="Website" type="text">
+                                        </div>
+
+                                        <div class="c-control" >
+                                            <label class="c-label" for="NumberOfEmployees">Quy mô (nhân sự) <small>Number of employees</small>
+                                                <span *ngIf="!formGroup.controls.NumberOfEmployees.valid && !formGroup.controls.NumberOfEmployees.pending && (formGroup.controls.NumberOfEmployees.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+                                            </label>
+                                            <input (change)="saveChange()" class="c-input" id="NumberOfEmployees" formControlName="NumberOfEmployees" type="number">
+                                        </div>
+
+                                        <div class="c-control" >
+                                            <label class="c-label" for="AnnualRevenue">Quy mô (doanh thu) <small>Annual revenue</small>
+                                                <span *ngIf="!formGroup.controls.AnnualRevenue.valid && !formGroup.controls.AnnualRevenue.pending && (formGroup.controls.AnnualRevenue.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+                                            </label>
+                                            <input (change)="saveChange()" class="c-input" id="AnnualRevenue" formControlName="AnnualRevenue" type="number">
+                                        </div>
+
+                                    </ion-col>
+                                </ion-row>
+
+                                
+
+                                <ion-row class="hr-group">
+                                    <ion-col size="12" size-sm="12" size-md="12" size-xl="3">
+                                        <ion-list-header class="ion-no-padding">
+                                            <ion-label color="primary">Thông tin cá nhân</ion-label>
+                                        </ion-list-header>
+                                    </ion-col>
+                                    <ion-col size="12" size-sm size-xl="4">
+                                        <div class="c-control" *ngIf="!item.IsPersonal">
+                                            <label class="c-label" for="Department">Phòng ban <small>Department</small>
+                                                <span *ngIf="!formGroup.controls.Department.valid && !formGroup.controls.Department.pending && (formGroup.controls.Department.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+                                            </label>
+                                            <input (change)="saveChange()" class="c-input" id="Department" formControlName="Department" type="text">
+                                        </div>
+
+                                        <div class="c-control" *ngIf="!item.IsPersonal">
+                                            <label class="c-label" for="Title">Chức danh <small>Title</small>
+                                                <span *ngIf="!formGroup.controls.Title.valid && !formGroup.controls.Title.pending && (formGroup.controls.Title.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+                                            </label>
+                                            <input (change)="saveChange()" class="c-input" id="Title" formControlName="Title" type="text">
+                                        </div>
+
+                                        <div class="c-control">
+                                            <label class="c-label" for="FullName">Họ và tên
+                                                <span *ngIf="!formGroup.controls.FullName.valid && !formGroup.controls.FullName.pending && (formGroup.controls.FullName.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+                                            </label>
+                                            <input class="c-input" id="FullName" (change)="bindName(); saveChange();" [(ngModel)]="item.FullName" formControlName="FullName" type="text">
+                                        </div>
+                                        <div class="c-control">
+                                            <label class="c-label" for="LastName">Họ
+                                                <span *ngIf="!formGroup.controls.LastName.valid && !formGroup.controls.LastName.pending && (formGroup.controls.LastName.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+                                            </label>
+                                            <input readonly class="c-input" id="LastName" formControlName="LastName" type="text">
+                                        </div>
+                                        <div class="c-control">
+                                            <label class="c-label" for="FirstName">Tên
+                                                <span *ngIf="!formGroup.controls.FirstName.valid && !formGroup.controls.FirstName.pending && (formGroup.controls.FirstName.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+                                            </label>
+                                            <input readonly class="c-input" id="FirstName" formControlName="FirstName" type="text">
+                                        </div>
+                                        
+                                        <div class="c-control">
+                                            <label class="c-label" for="DOB">Ngày sinh
+                                                <span *ngIf="!formGroup.controls.DOB.valid && !formGroup.controls.DOB.pending && (formGroup.controls.DOB.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+                                            </label>
+                                            <input class="c-input" id="DOB" formControlName="DOB" type="date" [min]="minDOB" [max]="maxDOB">
+                                        </div>
+                                        <div class="c-control">
+                                            <input (change)="saveChange()" id="Gender1" type="radio" [value]="true" formControlName="Gender" class="c-checkbox">
+                                            <label class="c-label radio" for="Gender1">
+                                                <span>Nam</span>
+                                            </label>
+
+                                            <input (change)="saveChange()" id="Gender2" type="radio" [value]="false" formControlName="Gender" class="c-checkbox">
+                                            <label class="c-label radio" for="Gender2">
+                                                <span>Nữ</span>
+                                                <span *ngIf="!formGroup.controls.Gender.valid && !formGroup.controls.Gender.pending && (formGroup.controls.Gender.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+                                            </label>
+                                        </div>
+                                    </ion-col>
+
+                                    <ion-col size="12" size-sm size-xl="4">
+                                        
+                                        
+
+                                        
+
+                                        <div class="c-control">
+                                            <label class="c-label" for="WorkPhone">Số điện thoại (công việc) <small>Work phone</small>
+                                                <span *ngIf="!formGroup.controls.WorkPhone.valid && !formGroup.controls.WorkPhone.pending && (formGroup.controls.WorkPhone.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+                                            </label>
+                                            <input (change)="saveChange()" class="c-input" formControlName="WorkPhone" type="text">
+                                        </div>
+
+                                        <div class="c-control">
+                                            <label class="c-label" for="MobilePhone">Số điện thoại di động <small>Mobile phone</small>
+                                                <span *ngIf="!formGroup.controls.MobilePhone.valid && !formGroup.controls.MobilePhone.pending && (formGroup.controls.MobilePhone.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+                                            </label>
+                                            <input (change)="saveChange()" class="c-input" formControlName="MobilePhone" type="text">
+                                        </div>
+
+                                        <div class="c-control">
+                                            <label class="c-label" for="HomePhone">Số điện thoại nhà <small>Home phone</small>
+                                                <span *ngIf="!formGroup.controls.HomePhone.valid && !formGroup.controls.HomePhone.pending && (formGroup.controls.HomePhone.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+                                            </label>
+                                            <input (change)="saveChange()" class="c-input" formControlName="HomePhone" type="text">
+                                        </div>
+
+                                        
+
+                                        <div class="c-control">
+                                            <label class="c-label" for="Email">Email
+                                                <span *ngIf="!formGroup.controls.Email.valid && !formGroup.controls.Email.pending && (formGroup.controls.Email.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+                                            </label>
+                                            <input (change)="saveChange()" class="c-input" formControlName="Email" type="email">
+                                        </div>
+
+                                        <div class="c-control">
+                                            <label class="c-label" for="Remark">Ghi chú
+                                                <span *ngIf="!formGroup.controls.Remark.valid && !formGroup.controls.Remark.pending && (formGroup.controls.Remark.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+                                            </label>
+                                            <textarea (change)="saveChange()" rows="3" class="c-input" id="Remark" formControlName="Remark" type="textarea"></textarea>
+                                        </div>
+
+
+                                        
+
+                                    </ion-col>
+                                </ion-row>
+
+                                <ion-row class="hr-group">
+                                    <ion-col size="12" size-sm="12" size-md="12" size-xl="3">
+                                        <ion-list-header class="ion-no-padding">
+                                            <ion-label color="primary">CMND / Thẻ căn cước</ion-label>
+                                        </ion-list-header>
+                                    </ion-col>
+                                    <ion-col size="12" size-sm size-xl="4">
+                                        <div class="c-control">
+                                            <label class="c-label" for="Domicile">Nguyên quán
+                                                <span *ngIf="!formGroup.controls.Domicile.valid && !formGroup.controls.Domicile.pending && (formGroup.controls.Domicile.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+                                            </label>
+                                            <input (change)="saveChange()" class="c-input" id="Domicile" formControlName="Domicile" type="text">
+                                        </div>
+                                        <div class="c-control">
+                                            <label class="c-label" for="IdentityCardNumber">Số CMND/Thẻ CC
+                                                <span *ngIf="!formGroup.controls.IdentityCardNumber.valid && !formGroup.controls.IdentityCardNumber.pending && (formGroup.controls.IdentityCardNumber.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+                                            </label>
+                                            <input (change)="saveChange()" class="c-input" id="IdentityCardNumber" formControlName="IdentityCardNumber" type="text">
+                                        </div>
+                                    </ion-col>
+                                    <ion-col size="12" size-sm size-xl="4">
+                                        <div class="c-control">
+                                            <label class="c-label" for="DateOfIssueID">Ngày cấp
+                                                <span *ngIf="!formGroup.controls.DateOfIssueID.valid && !formGroup.controls.DateOfIssueID.pending && (formGroup.controls.DateOfIssueID.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+                                            </label>
+                                            <input (change)="saveChange()" class="c-input" id="DateOfIssueID" formControlName="DateOfIssueID" type="date" [min]="minDOB">
+                                        </div>
+
+                                        <div class="c-control">
+                                            <label class="c-label" for="IssuedBy">Nơi cấp
+                                                <span *ngIf="!formGroup.controls.IssuedBy.valid && !formGroup.controls.IssuedBy.pending && (formGroup.controls.IssuedBy.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+                                            </label>
+                                            <input (change)="saveChange()" class="c-input" id="IssuedBy" formControlName="IssuedBy" type="text">
+                                        </div>
+                                    </ion-col>
+                                </ion-row>
+
+                                <ion-row>
+                                    <ion-col size="12" size-sm="12" size-md="12" size-xl="3">
+                                        <ion-list-header class="ion-no-padding">
+                                            <ion-label color="primary">Địa chỉ</ion-label>
+                                        </ion-list-header>
+                                    </ion-col>
+                                    <ion-col size="12" size-sm size-xl="4">
+                                        <div class="c-control">
+                                            <label class="c-label" for="AddressLine1">Địa chỉ dòng 1 <small>Address line 1</small>
+                                                <span *ngIf="!formGroup.controls.AddressLine1.valid && !formGroup.controls.AddressLine1.pending && (formGroup.controls.AddressLine1.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+                                            </label>
+                                            <textarea (change)="saveChange()" rows="3" class="c-input" id="AddressLine1" formControlName="AddressLine1" type="textarea"></textarea>
+                                        </div>
+
+                                        <div class="c-control">
+                                            <label class="c-label" for="AddressLine2">Địa chỉ dòng 2 <small>Address line 2</small>
+                                                <span *ngIf="!formGroup.controls.AddressLine2.valid && !formGroup.controls.AddressLine2.pending && (formGroup.controls.AddressLine2.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+                                            </label>
+                                            <textarea (change)="saveChange()" rows="3" class="c-input" id="AddressLine2" formControlName="AddressLine2" type="textarea"></textarea>
+                                        </div>
+
+                                    </ion-col>
+                                    <ion-col size="12" size-sm size-xl="4">
+                                        <div class="c-control">
+                                            <label class="c-label" for="IDCountry">Quốc gia <small>Country</small>
+                                                <span *ngIf="!formGroup.controls.IDCountry.valid && !formGroup.controls.IDCountry.pending && (formGroup.controls.IDCountry.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+                                            </label>
+                                            <input (change)="saveChange()" class="c-input" id="IDCountry" formControlName="IDCountry" type="number">
+                                        </div>
+                                        <div class="c-control">
+                                            <label class="c-label" for="IDProvince">Tỉnh thành <small>Province</small>
+                                                <span *ngIf="!formGroup.controls.IDProvince.valid && !formGroup.controls.IDProvince.pending && (formGroup.controls.IDProvince.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+                                            </label>
+                                            <input (change)="saveChange()" class="c-input" id="IDProvince" formControlName="IDProvince" type="number">
+                                        </div>
+                                        <div class="c-control">
+                                            <label class="c-label" for="IDCity">Quận huyện
+                                                <span *ngIf="!formGroup.controls.IDCity.valid && !formGroup.controls.IDCity.pending && (formGroup.controls.IDCity.dirty || submitAttempt)" ion-text color="danger">(*)</span>
+                                            </label>
+                                            <input (change)="saveChange()" class="c-input" id="IDCity" formControlName="IDCity" type="number">
+                                        </div>
+                                        
+                                    </ion-col>
+                                </ion-row>
+
+                            </form>
+
+                           
+                        </ion-grid>
+                    </div>
+                    
+                </div>
+                <div *ngIf="segmentView == 's2'">
+
+                </div>
+
+                <div *ngIf="segmentView == 's3'">
+
+
+                </div>
+
+                <div *ngIf="segmentView == 's4'">
+
+                </div>
+
+                <div *ngIf="segmentView == 's5'">
+
+                </div>
+
+                <div *ngIf="segmentView == 's6'">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</ion-content>

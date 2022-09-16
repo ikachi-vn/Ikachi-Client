@@ -1,0 +1,231 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="dark">
+        Bảng xét duyệt
+      </ion-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+
+
+      <ion-button (click)="refresh()" title="Tải lại">
+        <ion-icon slot="icon-only" name="reload-outline"></ion-icon>
+      </ion-button>
+
+      <!-- <ion-button title="Tìm kiếm" (click)="pageConfig.isShowSearch = !pageConfig.isShowSearch;">
+        <ion-icon slot="icon-only" [name]="pageConfig.isShowSearch? 'close-outline':'search-outline'">
+        </ion-icon>
+      </ion-button> -->
+
+      <ion-button title="Chức năng mở rộng" (click)="pageConfig.isShowFeature = !pageConfig.isShowFeature;">
+        <ion-icon slot="icon-only" [name]="pageConfig.isShowFeature? 'close-outline':'list-circle-outline'">
+        </ion-icon>
+      </ion-button>
+
+    </ion-buttons>
+  </ion-toolbar>
+
+  <div>
+    <section class="table">
+      <header class="bold">
+        <div class="col-checkbox cell hide-screen"></div>
+        <div class="col-id cell hide-screen" (click)="sortToggle('Id')">Id
+          <ion-icon class="min-btn" *ngIf="sort.Id" [name]="sort.Id == 'Id'?'arrow-down': 'arrow-up'"></ion-icon>
+          <ion-icon class="min-btn" (click)="pageConfig.isShowSearch = !pageConfig.isShowSearch" *ngIf="query.Id"
+            name="search" color="primary"></ion-icon>
+        </div>
+        <div class="col-date cell" (click)="sortToggle('RequestDate')">Thời gian
+          <ion-icon class="min-btn" *ngIf="sort.RequestDate"
+            [name]="sort.RequestDate == 'RequestDate'?'arrow-down': 'arrow-up'"></ion-icon>
+          <ion-icon class="min-btn" (click)="pageConfig.isShowSearch = !pageConfig.isShowSearch" *ngIf="query.Keyword"
+            name="search" color="primary"></ion-icon>
+        </div>
+        <div class="col-name cell" (click)="sortToggle('RequestNote')">Nội dung
+          <ion-icon class="min-btn" *ngIf="sort.RequestNote"
+            [name]="sort.RequestNote == 'RequestNote'?'arrow-down': 'arrow-up'"></ion-icon>
+          <ion-icon class="min-btn" (click)="pageConfig.isShowSearch = !pageConfig.isShowSearch"
+            *ngIf="query.RequestNote" name="search" color="primary"></ion-icon>
+        </div>
+        <div class="col-file cell" (click)="sortToggle('File')">File kèm
+          <ion-icon class="min-btn" *ngIf="sort.File"
+            [name]="sort.File == 'File'?'arrow-down': 'arrow-up'"></ion-icon>
+          <ion-icon class="min-btn" (click)="pageConfig.isShowSearch = !pageConfig.isShowSearch"
+            *ngIf="query.File" name="search" color="primary"></ion-icon>
+        </div>
+        <div class="col-code cell" (click)="sortToggle('RequestedBy')">Người đề xuất
+          <ion-icon class="min-btn" *ngIf="sort.RequestedBy"
+            [name]="sort.RequestedBy == 'RequestedBy'?'arrow-down': 'arrow-up'"></ion-icon>
+          <ion-icon class="min-btn" (click)="pageConfig.isShowSearch = !pageConfig.isShowSearch"
+            *ngIf="query.RequestedBy" name="search" color="primary"></ion-icon>
+        </div>
+        <div class="col-status cell" (click)="sortToggle('Status')">Trạng thái
+          <ion-icon class="min-btn" *ngIf="sort.Status" [name]="sort.Status == 'Status'?'arrow-down': 'arrow-up'">
+          </ion-icon>
+          <ion-icon class="min-btn" (click)="pageConfig.isShowSearch = !pageConfig.isShowSearch" *ngIf="query.Status"
+            name="search" color="primary"></ion-icon>
+        </div>
+      </header>
+
+      <form (submit)="refresh()" action="#">
+        <header class="filter" *ngIf="pageConfig.isShowSearch">
+          <div class="col-checkbox cell hide-screen"></div>
+          <div class="col-id cell hide-screen">
+            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="query.Id" class="c-input"
+              [ngClass]="{active: query.Id}" type="text">
+            <ion-icon class="min-btn" (click)="query.Id=''; refresh()" *ngIf="query.Id" name="close-circle-outline">
+            </ion-icon>
+          </div>
+          <div class="col-date cell">
+            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="query.RequestDate" class="c-input"
+              [ngClass]="{active: query.RequestDate}" type="text">
+            <ion-icon class="min-btn" (click)="query.RequestDate=''; refresh()" *ngIf="query.RequestDate"
+              name="close-circle-outline"></ion-icon>
+          </div>
+          <div class="col-name cell">
+            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="query.RequestNote" class="c-input"
+              [ngClass]="{active: query.RequestNote}" type="text">
+            <ion-icon class="min-btn" (click)="query.RequestNote=''; refresh()" *ngIf="query.RequestNote"
+              name="close-circle-outline"></ion-icon>
+          </div>
+          <div class="col-file cell">
+            <!-- <input [ngModelOptions]="{standalone: true}" [(ngModel)]="query.File" class="c-input"
+              [ngClass]="{active: query.File}" type="text">
+            <ion-icon class="min-btn" (click)="query.File=''; refresh()" *ngIf="query.File"
+              name="close-circle-outline"></ion-icon> -->
+          </div>
+          <div class="col-name cell">
+            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="query.RequestedBy" class="c-input"
+              [ngClass]="{active: query.RequestedBy}" type="text">
+            <ion-icon class="min-btn" (click)="query.RequestedBy=''; refresh()" *ngIf="query.RequestedBy"
+              name="close-circle-outline"></ion-icon>
+          </div>
+          <div class="col-status cell">
+            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="query.Status" class="c-input"
+              [ngClass]="{active: query.Status}" type="text">
+            <ion-icon class="min-btn" (click)="query.Status=''; refresh()" *ngIf="query.Status"
+              name="close-circle-outline"></ion-icon>
+          </div>
+          <button mat-raised-button type="submit" style="display:none">Search</button>
+        </header>
+      </form>
+    </section>
+  </div>
+</ion-header>
+
+<ion-content appScrollbarTheme>
+  <ion-fab [hidden]="!pageConfig.isShowFeature" [ngClass]="{withSearch: pageConfig.isShowSearch}" class="feature"vertical="top" horizontal="end" slot="fixed">
+    <div id="order-detail-page" style="position: absolute;"></div>
+    <div class="ion-padding">
+      <div class="title">
+        <div class="c-control">
+          <div class="c-label"><b>BÁO CÁO ĐỀ XUẤT</b></div>
+        </div>
+      </div>
+
+      <!-- <div class="c-control">
+        <label class="c-label">Chi nhánh</label>
+        <ng-container *ngFor="let b of pageBranch">
+          <ion-button [fill]="b.IsSelected ? 'solid' : 'outline'" size="small" (click)="toogleBranchDataset(b)">
+            {{b.Code}}
+          </ion-button>
+        </ng-container>
+      </div> -->
+
+      <div class="c-control">
+        <label class="c-label">Thời gian</label>
+        <ion-button *ngIf="rpt.rptGlobal.query.frequency == 1" (click)="changeDateFilter('cm')" [fill]="rpt.rptGlobal.query.type=='cm'? 'solid': 'outline'" size="small">Tháng này</ion-button>
+        <ion-button *ngIf="rpt.rptGlobal.query.frequency == 1" (click)="changeDateFilter('pm')" [fill]="rpt.rptGlobal.query.type=='pm'? 'solid': 'outline'" size="small">Tháng trước</ion-button>
+        <ion-button (click)="changeDateFilter('set')" [fill]="rpt.rptGlobal.query.type=='set'? 'solid': 'outline'" size="small">Tùy chọn...</ion-button>
+
+        <div *ngIf="rpt.rptGlobal.query.type=='set'" class="date-pick">
+          <input (blur)="changeDateFilter('setdone')" [(ngModel)]="rpt.rptGlobal.query.fromDate" required type="date" pattern="\d{1,2}/\d{1,2}/\d{4}" class="datepicker" name="date" value="" />
+          <input (blur)="changeDateFilter('setdone')" [(ngModel)]="rpt.rptGlobal.query.toDate" required type="date" pattern="\d{1,2}/\d{1,2}/\d{4}" class="datepicker" name="date" value="" />
+        </div>
+        <div class="query-time">{{rpt.rptGlobal.query.fromDate}} - {{rpt.rptGlobal.query.toDate}}</div>
+      </div>
+
+      <div class="c-control">
+        <label class="c-label" for="StatusCode">Tình trạng</label>
+        <ng-select appendTo="#order-detail-page" class="c-input no-check-dirty" #StatusCode [(ngModel)]="statusCode" labelForId="Name" [items]="statusList" bindLabel="Name" bindValue="Code" placeholder="Vui lòng chọn tình trạng"></ng-select>
+      </div>
+    </div>
+  </ion-fab>
+
+  <app-page-message [itemsLength]="items.length" [showSpinner]="pageConfig.showSpinner"></app-page-message>
+  <div *ngIf="items.length && pageConfig.showSpinner==false">
+    <section class="table">
+      <app-page-message [itemsLength]="items.length" [showSpinner]="pageConfig.showSpinner"></app-page-message>
+      <div *ngIf="items.length && pageConfig.showSpinner==false">
+        <section class="table">
+          <ion-list>
+            <div *ngFor="let i of items">
+              <div class="row" [ngClass]="{selected: i.checked}" [ngStyle]="{'border-left': 'solid 5px rgba(var(--ion-color-' + i.ApprovalStatus?.Color + '-rgb, 0, 0, 0), 1)'}">
+    
+                <div class="row-1">
+                  <div class="col-checkbox cell">
+                    <input (click)="changeSelection(i, $event)" class="c-checkbox" [(ngModel)]="i.checked" type="checkbox">
+                  </div>
+                  <div class="col-id cell">
+                    {{i.ID}}
+                  </div>
+                  <div class="col-code col-orderDate cell">
+                    {{i.RequestDateText}}
+                    <small *ngIf="i.RequestDateTime">{{i.RequestDateTime}}</small>
+                  </div>
+                  <div class="col-name cell">
+                    {{i.RequestNote}}
+                  </div>
+                  <div class="col-file cell">
+                    <ion-icon *ngIf="i.FileLink" name="attach-outline" (click)="OpenPDF(i)"></ion-icon>
+                  </div>
+                  <div class="col-code cell">
+                    {{i.RequestBy}}
+                  </div>
+                  <div class="col-status cell" (click)="showDetail(i)">
+                    <span class="bar-holder">
+                      <ion-text class="bar-title" [color]="i.ApprovalStatus?.Color">{{i.ApprovalStatus?.Name}}</ion-text>
+                      <span class="bar" [ngClass]="{active: s.Id==i.ApprovalStatus?.Id}" [ngStyle]="{'background-color': 'var(--ion-color-'+s.Color+')'}" *ngFor="let s of statusList" [title]="s.Name"></span>
+                    </span>
+                  </div>
+                </div>
+    
+                <div class="row-2" [hidden]="!i.isShowDetail || i.Status == 2">
+                  <ion-grid fixed>
+                    <ion-row>
+                      <ion-col size="12" size-md="12" size-lg="12" size-xl="12">
+                        <div class="c-control">
+                          <textarea class="c-input" placeholder="Nhập nội dung phản hồi..." [(ngModel)]="i.ApprovedNote" id="ApprovedNote" type="textarea"></textarea>
+                        </div>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row>
+                      <ion-col size="6" size-md="6" size-lg="6" size-xl="6">
+                          <ion-button expand="block" size="small" color="danger" (click)="changeStatus(i, 3)">Từ chối</ion-button>
+                      </ion-col>
+                      <ion-col size="6" size-md="6" size-lg="6" size-xl="6">
+                          <ion-button expand="block" size="small" color="success" (click)="changeStatus(i, 2)">Chấp nhận</ion-button>
+                      </ion-col>
+                    </ion-row>
+                  </ion-grid>
+                </div>
+              </div>
+            </div>
+          </ion-list>
+
+
+
+        </section>
+      </div>
+    </section>
+  </div>
+  <ion-infinite-scroll color="primary" threshold="20%" (ionInfinite)="loadData($event)" [disabled]="!pageConfig.infiniteScroll || pageConfig.isEndOfData">
+    <ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+
+
+
+
+
+</ion-content>

@@ -1,0 +1,20 @@
+
+.cell b{
+    color: var(--ion-color-primary);
+}
+
+.table {
+    background: transparent;
+    .row.header {
+        height: 4.5rem;
+        padding-top: 1rem;
+        background: transparent;
+    }
+    .row{
+        background: var(--ion-color-tertiary-tint);
+
+        &.selected{
+            font-weight: bold;
+        }
+    }
+}

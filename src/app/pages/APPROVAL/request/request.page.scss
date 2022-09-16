@@ -1,0 +1,17 @@
+
+.col-code {
+    max-width: 250px !important;
+    min-width: 250px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.table .col-name {
+    cursor: pointer;
+    min-width: 200px;
+}
+
+.table .col-info {
+    width: 130px;
+}

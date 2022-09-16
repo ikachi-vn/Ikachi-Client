@@ -1,0 +1,27 @@
+
+
+.fc{
+    --fc-border-color: var(--menu-right-border-color);
+
+    .fc-scrollgrid {
+        border: none !important;
+    }
+    
+    .fc-scrollgrid td:last-of-type {
+        border-right: none !important;
+    }
+
+    .fc-event-main {
+        ion-icon {
+            float: right;
+            padding-right: 5px;
+            display: none;
+        }
+    
+        &:hover ion-icon {
+            display: block;
+        }
+    }
+
+}
+

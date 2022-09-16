@@ -1,0 +1,88 @@
+<ion-header>
+  <app-list-toolbar pageTitle="Hospital KPI" [pageConfig]="pageConfig" [selectedItems]="selectedItems" [query]="query">
+  </app-list-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-grid fixed>
+    <ion-row class="hr-group">
+      <ion-col size="12" size-sm="12" size-md="12" size-xl="4">
+        <ion-card>
+          <div>
+            <ion-text color="dark">
+              Saint Martins Clinic
+            </ion-text>
+          </div>
+          <!-- <ion-card-header class="background"> -->
+
+          <!-- </ion-card-header> -->
+
+          <ion-card-content>
+            <!-- Gauge Chart -->
+            <!-- <div id="NetPromoterChart" style="width: 100%; height: 100%"></div> -->
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="12" size-sm="12" size-md="12" size-xl="8">
+        <ion-row class="hr-group">
+          <ion-col size="12" size-sm="12" size-md="12" size-xl="12">
+            <ion-card>
+              <div>
+                <ion-text color="dark">
+                  Outpatients vs Inpatients Trend
+                </ion-text>
+              </div>
+              <!-- <ion-card-header class="background"> -->
+
+              <!-- </ion-card-header> -->
+
+              <ion-card-content>
+                <!-- Group Column Chart -->
+                <div id="OutInPatientsTrendChart" style="width: 100%; height: 100%"></div>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+
+          <ion-col size="12" size-sm="12" size-md="12" size-xl="6">
+            <ion-card>
+              <div>
+                <ion-text color="dark">
+                  Patients By Duration
+                </ion-text>
+              </div>
+              <!-- <ion-card-header class="background"> -->
+
+              <!-- </ion-card-header> -->
+
+              <ion-card-content>
+                <!-- Gauge Chart -->
+                <!-- <div id="PatientsByDurationChart" style="width: 100%; height: 100%"></div> -->
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+
+          <ion-col size="12" size-sm="12" size-md="12" size-xl="6">
+            <ion-card>
+              <div>
+                <ion-text color="dark">
+                  Avg Wating Time By Duration
+                </ion-text>
+              </div>
+              <!-- <ion-card-header class="background"> -->
+
+              <!-- </ion-card-header> -->
+
+              <ion-card-content>
+                <!-- Sorted Bar Chart -->
+                <div id="WatingTimeChart" style="width: 100%; height: 100%"></div>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

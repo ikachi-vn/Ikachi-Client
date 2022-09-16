@@ -1,0 +1,14 @@
+<ng-content></ng-content>
+<ion-button (click)="emit('refresh')" title="Refresh">
+    <ion-icon slot="icon-only" name="reload-outline"></ion-icon>
+</ion-button>
+<ion-button *ngIf="item && item.Id && pageConfig.canDelete" (click)="emit('delete')" title="Xóa bỏ">
+    <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+</ion-button>
+<ion-button title="Trợ giúp" (click)="emit('help')">
+    <ion-icon slot="icon-only" name="help-circle-outline"></ion-icon>
+</ion-button>
+<ion-button *ngIf="ShowFeature" title="Chức năng mở rộng" (click)="pageConfig.isShowFeature = !pageConfig.isShowFeature;">
+    <ion-icon slot="icon-only" [name]="pageConfig.isShowFeature? 'close-outline':'list-circle-outline'">
+    </ion-icon>
+</ion-button>

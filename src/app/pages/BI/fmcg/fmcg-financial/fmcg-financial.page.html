@@ -1,0 +1,73 @@
+<ion-header>
+  <app-list-toolbar pageTitle="FMCG Financial" [pageConfig]="pageConfig" [selectedItems]="selectedItems" [query]="query">
+  </app-list-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-grid fixed>
+    <ion-row class="hr-group">
+      <ion-col size="12" size-sm="12" size-md="12" size-xl="8">
+        <ion-card>
+          <div>
+            <ion-text color="dark">
+              Supply Chain Costs
+            </ion-text>
+          </div>
+          <!-- <ion-card-header class="background"> -->
+          <!-- Line Chart -->
+          <!-- <div id="FleetChart" style="width: 100%; height: 100%"></div> -->
+          <!-- </ion-card-header> -->
+
+          <ion-card-content>
+            <!-- Gauge Chart -->
+            <div id="SupplyChainCostsChart" style="width: 100%; height: 100%"></div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="12" size-sm="12" size-md="12" size-xl="4">
+        <ion-row class="hr-group">
+          <ion-col size="12" size-sm="12" size-md="12" size-xl="12">
+            <ion-card>
+              <div>
+                <ion-text color="dark">
+                  Cash-to-Cash Cycle (in days)
+                </ion-text>
+              </div>
+              <!-- <ion-card-header class="background"> -->
+              <!-- Line Chart -->
+              <!-- <div id="FleetChart" style="width: 100%; height: 100%"></div> -->
+              <!-- </ion-card-header> -->
+
+              <ion-card-content>
+                <!-- Trend Line Chart -->
+                <div id="CashToCashCycleChart" style="width: 100%; height: 100%"></div>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+
+          <ion-col size="12" size-sm="12" size-md="12" size-xl="12">
+            <ion-card>
+              <div>
+                <ion-text color="dark">
+                  Carrying Costs Of Inventory
+                </ion-text>
+              </div>
+              <!-- <ion-card-header class="background"> -->
+              <!-- Line Chart -->
+              <!-- <div id="FleetChart" style="width: 100%; height: 100%"></div> -->
+              <!-- </ion-card-header> -->
+
+              <ion-card-content>
+                <!-- Pie Chart -->
+                <div id="CarryingCostsOfInventoryChart" style="width: 100%; height: 100%"></div>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+
+</ion-content>
