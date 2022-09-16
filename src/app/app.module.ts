@@ -23,10 +23,6 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 
 
-import { SalemanDebtModalPage } from './pages/SALE/saleman-debt-modal/saleman-debt-modal.page';
-import { SaleOrderSplitModalPage } from './pages/SALE/sale-order-split-modal/sale-order-split-modal.page';
-import { SaleOrderMergeModalPage } from './pages/SALE/sale-order-merge-modal/sale-order-merge-modal.page';
-import { SaleOrderMobileAddContactModalPage } from './pages/SALE/sale-order-mobile-add-contact-modal/sale-order-mobile-add-contact-modal.page';
 
 import { IMaskDirectiveModule } from 'angular-imask';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -40,7 +36,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
 ]);
 
 @NgModule({
-  declarations: [AppComponent, PopoverPage, SaleOrderSplitModalPage, SaleOrderMergeModalPage, SalemanDebtModalPage, SaleOrderMobileAddContactModalPage],
+  declarations: [AppComponent, PopoverPage],
   entryComponents: [PopoverPage],
   imports: [
     BrowserModule,
