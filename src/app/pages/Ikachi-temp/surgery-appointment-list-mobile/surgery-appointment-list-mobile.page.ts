@@ -61,7 +61,7 @@ export class SurgeryAppointmentListMobilePage extends PageBase {
     selectedBTNBranch: {ID: this.env.selectedBranch, Code: 'HYEC'}, //default
     fromDate: lib.dateFormat(new Date(), 'yyyy-mm-dd'),
     toDate: lib.dateFormat(new Date(), 'yyyy-mm-dd'),
-    _toDate: lib.dateFormat(new Date(), 'yyyy-mm-dd') + " 23:59:59",
+    _toDate: lib.dateFormat(new Date(), 'yyyy-mm-dd') + 'T23:59:59',
     BranchID: this.env.selectedBranch,
   };
 
@@ -161,7 +161,7 @@ export class SurgeryAppointmentListMobilePage extends PageBase {
       if (result.data) {
         this.customQuery.fromDate = result.data.fromDate;
         this.customQuery.toDate = result.data.toDate;
-        this.customQuery._toDate = result.data.toDate + " 23:59:59";
+        this.customQuery._toDate = result.data.toDate + 'T23:59:59';
         // this.customQuery.BranchID = result.data.BranchID;
         this.customQuery.BranchID = this.env.selectedBranch;
         this.customQuery.selectedBTNDate = result.data.selectedBTNDate;

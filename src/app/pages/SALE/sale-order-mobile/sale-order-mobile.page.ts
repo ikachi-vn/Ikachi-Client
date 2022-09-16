@@ -273,7 +273,7 @@ export class SaleOrderMobilePage extends PageBase {
             if (result.data) {
                 this.query.OrderDateFrom = result.data.fromDate;
                 this.query._toDate = result.data.toDate;
-                this.query.OrderDateTo = result.data.toDate + ' 23:59:59';
+                this.query.OrderDateTo = result.data.toDate + 'T23:59:59';
                 this.query.IDStatus = result.data.IDSaleOrderStatus;
                 this.query.selectedBTNDate = result.data.selectedBTNDate;
 

@@ -10,7 +10,8 @@ export const environment = {
   //appDomain: 'http://art.appcenter.vn/',
   //appDomain: "http://192.168.1.8:54009/",
   //appDomain: "http://10.211.55.6:54009/",
-  appDomain: "http://localhost:54009/",
+  appDomain: 'http://ikachi.hyec.vn/',
+  //appDomain: "http://localhost:54009/",
   
   apiVersion: "api/v1/",
   showScrollbar: (navigator.appVersion.indexOf("Win") > -1) || true,

@@ -18,7 +18,7 @@ export var lib = {
 	},
 	generateUID() {
 		var d = new Date().getTime();
-		var uuid = d + '-xxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+		var uuid = d + 'xxxxxxxxxxx'.replace(/[xy]/g, function (c) {
 			var r = (d + Math.random() * 16) % 16 | 0;
 			d = Math.floor(d / 16);
 			return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
@@ -40,7 +40,9 @@ export var lib = {
 		if (!date) {
 			return failReturn;
 		}
-
+		if (date.indexOf && date.indexOf('-') > 0 && date.indexOf('T') ==-1) {
+			date = date.replace(/-/g, "/");
+		}
 		let value = new Date(date);
 		let result = '';
 		let yy = value.getFullYear();
@@ -90,8 +92,8 @@ export var lib = {
 		else if (term == 'hh:MM:ss') {
 			result = this.paddingNumber(hh, 2) + ':' + this.paddingNumber(MM, 2) + ':' + this.paddingNumber(ss, 2);
 		}
-		else if (term == 'weekday'){
-			const weekday = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+		else if (term == 'weekday') {
+			const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 			result = weekday[value.getDay()];
 		}
 
@@ -147,13 +149,13 @@ export var lib = {
 	currencyFormatFriendly(amount) {
 		if (this.isNumeric(amount)) {
 			let result = '';
-			if (amount > 10 ** 9) {
+			if (amount >= 10 ** 9) {
 				result = (Math.round(amount / 10 ** 8) / 10) + ' B';
 			}
-			else if (amount > 10 ** 6) {
+			else if (amount >= 10 ** 6) {
 				result = (Math.round(amount / 10 ** 5) / 10) + ' M';
 			}
-			else if (amount > 10 ** 3) {
+			else if (amount >= 10 ** 3) {
 				result = (Math.round(amount / 10 ** 2) / 10) + ' K';
 			}
 			else {
@@ -253,9 +255,16 @@ export var lib = {
 		return result;
 	},
 	getStartEndDates(start, end) {
+		if (end.indexOf && end.indexOf('-') > 0 && end.indexOf('T') ==-1) {
+			end = end.replace(/-/g, "/");
+		}
+		if (start.indexOf && start.indexOf('-') > 0 && start.indexOf('T') ==-1) {
+			start = start.replace(/-/g, "/");
+		}
+
 		end = new Date(end);
 		for (var arr = [], dt = new Date(start); dt <= end; dt.setDate(dt.getDate() + 1)) {
-			arr.push({Date: new Date(dt)});
+			arr.push({ Date: new Date(dt) });
 		}
 		return arr;
 	},
@@ -517,5 +526,20 @@ export var lib = {
 			this.findChildren(ls, i.Id, ids);
 		});
 		return ids;
+	},
+
+	calcDistance2Points(lat1, lon1, lat2, lon2) {
+		const R = 6371e3; // metres double R = 6371 in KM;
+		const φ1 = lat1 * Math.PI / 180; // φ, λ in radians
+		const φ2 = lat2 * Math.PI / 180;
+		const Δφ = (lat2 - lat1) * Math.PI / 180;
+		const Δλ = (lon2 - lon1) * Math.PI / 180;
+
+		const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+			Math.cos(φ1) * Math.cos(φ2) *
+			Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+		const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+		const d = R * c; // in metres
 	}
 }

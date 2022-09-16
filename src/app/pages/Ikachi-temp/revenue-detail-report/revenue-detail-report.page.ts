@@ -51,7 +51,7 @@ export class RevenueDetailReportPage extends PageBase {
 
   preLoadData(event) {
     this.fromDate = this.rpt.rptGlobal.query.fromDate;
-    this.toDate = this.rpt.rptGlobal.query.toDate + ' 23:59:59';
+    this.toDate = this.rpt.rptGlobal.query.toDate + 'T23:59:59';
     this.selectedBranchID = this.env.selectedBranch;
     super.preLoadData(event);
   }

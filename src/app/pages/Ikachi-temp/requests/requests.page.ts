@@ -99,7 +99,7 @@ export class RequestsPage extends PageBase {
 
   preLoadData(event) {
     this.fromDate = this.rpt.rptGlobal.query.fromDate;
-    this.toDate = this.rpt.rptGlobal.query.toDate + ' 23:59:59';
+    this.toDate = this.rpt.rptGlobal.query.toDate + 'T23:59:59';
     super.preLoadData(event);
   }
 

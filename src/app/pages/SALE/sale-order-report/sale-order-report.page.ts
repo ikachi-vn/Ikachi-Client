@@ -102,7 +102,7 @@ export class SaleOrderReportPage extends PageBase {
     this.query.Skip = 0;
     this.query.selectedBranchID = this.selectedBranchID;
     this.query.OrderDateFrom = this.rpt.rptGlobal.query.fromDate;
-    this.query.OrderDateTo = this.rpt.rptGlobal.query.toDate + ' 23:59:59';
+    this.query.OrderDateTo = this.rpt.rptGlobal.query.toDate + 'T23:59:59';
     this.query._toDate = this.rpt.rptGlobal.query.toDate;
 
     this.pageProvider.apiPath.getList.url = function () { return ApiSetting.apiDomain("SALE/Order/List") };
